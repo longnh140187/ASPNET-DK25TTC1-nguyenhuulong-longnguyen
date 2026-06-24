@@ -1,0 +1,94 @@
+@model RecipeWebsite.Web.ViewModels.LoginViewModel
+@{
+    Layout = "_LayoutAuth";
+    ViewData["Title"] = "Đăng nhập Admin";
+}
+
+<div class="max-w-[1000px] w-full bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+    <!-- Left Side: Brand -->
+    <div class="relative w-full md:w-1/2 bg-surface-container hidden md:flex flex-col items-center justify-center p-8 overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-60"
+             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDvo4Lzb2tHAji_Q07hsUPDEtmqmA8rPDLkVExnosd8_5vtrPPxqleqkfaOJqeneDSAOYB1x2aqhYxLvPm7_NRvigmDoaBqiXHOBYooxcluo8OxQETrpgvy7QYtxpsbjwsnNyE9ixyYQSmK14ZdQnqRXG08ZDg1zqyUtBvtCMdVbEbN5M3lYg7mHmGlhyEO0ufmGV5Qbf46UlX7lgk-N8UTQRqTpt-wAGL9hfcJnkOiA2yIwzOo5QCtSbke0APO4nJpdHz7yVlHtqU');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-surface/40 to-surface/80 z-0"></div>
+        <div class="relative z-10 flex flex-col items-center text-center">
+            <a asp-controller="Home" asp-action="Index">
+                <img alt="Nấu Ngon Mỗi Ngày Logo" class="h-24 mb-6 drop-shadow-md"
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn2hAKTHv6LJYBKqovfTjW-i-EWge5kTADFT6DPuct8gFK_Go_Vxr00KJ-TEUaxpPFI0_y_saKJkum-5zZIivC8r_BipSzuzoHhomPqIH5bw9K7ysMiJJ4MHArVhPohcekSaXj4lNM3qFSQZwdaVDDuZ61fZeJUaYTu8G9LCPYfZFSAoBEsMwZPgdlWkQjSvlW1rDGcV9eqJGjseiRyPj2wsaTrsiicZjCT7trMaSypPNSrM6klpcWltoys1iyZ0uvifgOWDxqJGk">
+            </a>
+            <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Quản trị dễ dàng</h1>
+            <h2 class="font-headline-lg text-headline-lg text-primary-container mb-4">Nội dung hấp dẫn</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-sm">
+                Đăng nhập để quản lý công thức, bài viết, thành viên và nhiều hơn nữa.
+            </p>
+        </div>
+    </div>
+
+    <!-- Right Side: Login Form -->
+    <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
+        <div class="max-w-md w-full mx-auto">
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-12 h-12 bg-primary-fixed flex items-center justify-center rounded-full mb-4">
+                    <span class="material-symbols-outlined text-primary-container">lock</span>
+                </div>
+                <h2 class="font-headline-md text-headline-md text-on-surface mb-1">Đăng nhập Admin</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant">Chào mừng bạn quay trở lại!</p>
+            </div>
+
+            <form asp-action="Login" asp-controller="Manage" method="post" class="space-y-stack-md">
+                <div asp-validation-summary="ModelOnly" class="text-error text-body-md"></div>
+
+                <div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-on-surface-variant/50 text-xl">person</span>
+                        </div>
+                        <input asp-for="UsernameOrEmail"
+                               class="block w-full pl-10 pr-3 py-3 border border-outline-variant rounded-lg bg-surface-container-lowest focus:ring-2 focus:ring-primary-container focus:border-primary-container font-body-md text-body-md text-on-surface placeholder-on-surface-variant/50 transition-colors"
+                               placeholder="Tên đăng nhập hoặc email" />
+                    </div>
+                    <span asp-validation-for="UsernameOrEmail" class="text-error text-label-md mt-1 block"></span>
+                </div>
+
+                <div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-on-surface-variant/50 text-xl">lock</span>
+                        </div>
+                        <input asp-for="Password" id="passwordInput"
+                               class="block w-full pl-10 pr-10 py-3 border border-outline-variant rounded-lg bg-surface-container-lowest focus:ring-2 focus:ring-primary-container focus:border-primary-container font-body-md text-body-md text-on-surface placeholder-on-surface-variant/50 transition-colors"
+                               placeholder="Mật khẩu" />
+                        <button id="togglePassword" type="button"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-on-surface-variant/50 hover:text-on-surface transition-colors focus:outline-none">
+                            <span id="togglePasswordIcon" class="material-symbols-outlined text-xl">visibility_off</span>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="text-error text-label-md mt-1 block"></span>
+                </div>
+
+                <div class="flex items-center justify-between mt-4">
+                    <div class="flex items-center">
+                        <input asp-for="RememberMe"
+                               class="h-4 w-4 text-primary-container focus:ring-primary-container border-outline-variant rounded cursor-pointer" />
+                        <label asp-for="RememberMe" class="ml-2 block font-body-md text-body-md text-on-surface-variant cursor-pointer"></label>
+                    </div>
+                    <div class="text-sm">
+                        <a class="font-label-md text-label-md text-primary-container hover:text-primary transition-colors" href="#">
+                            Quên mật khẩu?
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit"
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm font-label-md text-label-md text-on-primary bg-primary-container hover:bg-[#e66000] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container transition-colors">
+                        Đăng nhập
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/manage-login.js" asp-append-version="true"></script>
+}

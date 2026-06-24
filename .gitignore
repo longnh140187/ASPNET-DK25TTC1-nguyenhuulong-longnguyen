@@ -1,0 +1,27 @@
+## Build
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Environment
+.env
+appsettings.*.local.json
+secrets.json
+
+## IDE
+.idea/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## OS
+.DS_Store
+Thumbs.db
+
+## .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/

@@ -38,7 +38,7 @@
             <span class="@IconClass("articles")">edit_document</span>
             <span class="font-body-md text-body-md @(activeMenu != "articles" ? "group-hover:text-primary transition-colors" : "")">Bài viết</span>
         </a>
-        <a class="@NavClass("members")" href="#">
+        <a class="@NavClass("members")" asp-controller="ManagerUsers" asp-action="Index">
             <span class="@IconClass("members")">group</span>
             <span class="font-body-md text-body-md @(activeMenu != "members" ? "group-hover:text-primary transition-colors" : "")">Thành viên</span>
         </a>

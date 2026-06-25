@@ -1,0 +1,211 @@
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Dashboard quản trị";
+    ViewData["ActiveMenu"] = "dashboard";
+    ViewData["HeaderTitle"] = "Dashboard";
+    ViewData["HeaderSubtitle"] = "Xin chào, Admin! Chúc bạn một ngày làm việc hiệu quả.";
+}
+
+<partial name="_AdminPageStart" />
+
+<!-- Metric Cards -->
+<div class="grid grid-cols-1 mb-8 gap-4 md:grid-cols-4">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] flex items-center gap-4 hover:shadow-[0px_8px_30px_rgba(0,0,0,0.08)] transition-shadow p-4 flex-row">
+<div class="rounded-md bg-primary-fixed flex items-center justify-center text-primary-container w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">description</span></div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Tổng bài viết</p>
+<h3 class="font-headline-md text-on-surface text-headline-sm">1,245</h3>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] flex items-center gap-4 hover:shadow-[0px_8px_30px_rgba(0,0,0,0.08)] transition-shadow p-4 flex-row">
+<div class="rounded-md bg-secondary-fixed flex items-center justify-center text-secondary w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">soup_kitchen</span></div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Công thức</p>
+<h3 class="font-headline-md text-on-surface text-headline-sm">856</h3>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] flex items-center gap-4 hover:shadow-[0px_8px_30px_rgba(0,0,0,0.08)] transition-shadow p-4 flex-row">
+<div class="rounded-md bg-tertiary-fixed flex items-center justify-center text-tertiary w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">person</span></div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Thành viên</p>
+<h3 class="font-headline-md text-on-surface text-headline-sm">12,568</h3>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] flex items-center gap-4 hover:shadow-[0px_8px_30px_rgba(0,0,0,0.08)] transition-shadow p-4 flex-row">
+<div class="rounded-md bg-error-container flex items-center justify-center text-error w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">chat</span></div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Bình luận</p>
+<h3 class="font-headline-md text-on-surface text-headline-sm">2,358</h3>
+</div>
+</div>
+</div>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+<!-- Left Column: Charts (takes up 2 columns on lg) -->
+<div class="flex flex-col gap-6 lg:col-span-2">
+<!-- Main Traffic Chart -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Thống kê lượt truy cập</h3>
+<div class="relative">
+<select class="appearance-none bg-surface-container border border-surface-variant rounded-md py-1.5 pl-3 pr-8 font-label-md text-label-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent">
+<option>30 ngày qua</option>
+<option>7 ngày qua</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-sm">expand_more</span>
+</div>
+</div>
+<!-- SVG Line Chart Mockup -->
+<div class="w-full h-64 relative">
+<svg class="w-full h-full preserveAspectRatio='none'" viewBox="0 0 800 250">
+<!-- Grid Lines -->
+<line class="chart-grid" x1="40" x2="780" y1="20" y2="20"></line>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="end" x="30" y="25">25K</text>
+<line class="chart-grid" x1="40" x2="780" y1="70" y2="70"></line>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="end" x="30" y="75">20K</text>
+<line class="chart-grid" x1="40" x2="780" y1="120" y2="120"></line>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="end" x="30" y="125">15K</text>
+<line class="chart-grid" x1="40" x2="780" y1="170" y2="170"></line>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="end" x="30" y="175">10K</text>
+<line stroke="#e4e2e2" stroke-width="1" x1="40" x2="780" y1="220" y2="220"></line>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="end" x="30" y="225">0</text>
+<!-- X Axis Labels -->
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="middle" x="60" y="240">01/05</text>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="middle" x="180" y="240">06/05</text>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="middle" x="300" y="240">11/05</text>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="middle" x="420" y="240">16/05</text>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="middle" x="540" y="240">21/05</text>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="middle" x="660" y="240">26/05</text>
+<text class="font-label-md text-[10px] fill-tertiary" text-anchor="middle" x="760" y="240">31/05</text>
+<!-- Line Path -->
+<path d="M 60 180 L 90 160 L 120 120 L 150 140 L 180 180 L 210 130 L 240 90 L 270 90 L 300 120 L 330 115 L 360 150 L 390 120 L 420 100 L 450 60 L 480 50 L 510 80 L 540 100 L 570 120 L 600 90 L 630 60 L 660 70 L 690 100 L 720 120 L 750 100" fill="none" stroke="#ff6b00" stroke-width="2"></path>
+<!-- Data Points -->
+<circle cx="60" cy="180" fill="#fff" r="4" stroke="#ff6b00" stroke-width="2"></circle>
+<circle cx="120" cy="120" fill="#fff" r="4" stroke="#ff6b00" stroke-width="2"></circle>
+<circle cx="240" cy="90" fill="#fff" r="4" stroke="#ff6b00" stroke-width="2"></circle>
+<circle cx="480" cy="50" fill="#fff" r="4" stroke="#ff6b00" stroke-width="2"></circle>
+<circle cx="630" cy="60" fill="#fff" r="4" stroke="#ff6b00" stroke-width="2"></circle>
+<circle cx="750" cy="100" fill="#fff" r="4" stroke="#ff6b00" stroke-width="2"></circle>
+</svg>
+</div>
+</div>
+<!-- Secondary Chart (Now Full Width) -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Thống kê bài viết</h3>
+<div class="flex items-center justify-between max-w-md">
+<div class="w-32 h-32 relative">
+<svg class="w-full h-full transform -rotate-90 rounded-full" viewBox="0 0 32 32">
+<circle cx="16" cy="16" fill="transparent" r="16" stroke="#e4e2e2" stroke-width="8"></circle>
+<circle cx="16" cy="16" fill="transparent" r="16" stroke="#ff6b00" stroke-dasharray="36 100" stroke-width="8"></circle>
+<circle cx="16" cy="16" fill="transparent" r="16" stroke="#85dc5b" stroke-dasharray="25 100" stroke-dashoffset="-36" stroke-width="8"></circle>
+<circle cx="16" cy="16" fill="transparent" r="16" stroke="#8b5cf6" stroke-dasharray="22 100" stroke-dashoffset="-61" stroke-width="8"></circle>
+<circle cx="16" cy="16" fill="transparent" r="16" stroke="#ec4899" stroke-dasharray="16 100" stroke-dashoffset="-83" stroke-width="8"></circle>
+<circle cx="16" cy="16" fill="#ffffff" r="10"></circle>
+</svg>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container"></div>
+<span class="font-label-md text-label-md text-on-surface">Món chính</span>
+</div>
+<span class="font-label-md text-[11px] text-tertiary">456 (36.6%)</span>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim"></div>
+<span class="font-label-md text-label-md text-on-surface">Món ăn nhẹ</span>
+</div>
+<span class="font-label-md text-[11px] text-tertiary">312 (25.1%)</span>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-purple-500"></div>
+<span class="font-label-md text-label-md text-on-surface">Món nước</span>
+</div>
+<span class="font-label-md text-[11px] text-tertiary">278 (22.4%)</span>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-pink-500"></div>
+<span class="font-label-md text-label-md text-on-surface">Bánh ngọt</span>
+</div>
+<span class="font-label-md text-[11px] text-tertiary">199 (16.0%)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Latest Posts -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] h-fit">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Bài viết mới nhất</h3>
+<button class="px-3 py-1 border border-surface-variant rounded-md font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors">Xem tất cả</button>
+</div>
+<div class="flex flex-col gap-5">
+<!-- Post Item 1 -->
+<div class="flex gap-4 items-center group cursor-pointer">
+<img class="w-16 h-16 rounded-lg object-cover group-hover:opacity-90 transition-opacity" data-alt="A close-up, high-quality food photograph of a traditional Vietnamese Pho bowl. Rich beef broth, tender slices of beef, fresh rice noodles, garnished with green onions and cilantro. Warm, appetizing lighting, modern culinary styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVjRWsJmMfQCAbQP9UMLOI3Pe9FJCBtDUzIy86F-0G22Rl5yCAoyCgQM-MQq1anmOsR6mVw6iOxlo1XHYQ4OZ37mP6o6xhbZ6JUx_NVO2wZCFQNt-AzoGnQP4dh4oHtxQOP-rVq7nqaArDOUlHdzALrXFaHZn49uQYnEobXRZIm7yuIawguOXJ1ndpEMsm6Txtwcf4pFLE6tvowYqAyZRUvnCr7XTgWF0N3K3ki_Lfthq5pZBpKV43TNnChdO-3OSEEmOONV5AwbA">
+<div class="flex-1 min-w-0">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface truncate group-hover:text-primary transition-colors">Cách làm phở bò truyền thống thơm ngon đậm đà</h4>
+<p class="font-label-md text-[11px] text-tertiary mt-1 text-label-md">Món nước</p>
+<p class="font-label-md text-[11px] text-tertiary text-label-md">2 giờ trước</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim flex-shrink-0"></div>
+</div>
+<!-- Post Item 2 -->
+<div class="flex gap-4 items-center group cursor-pointer">
+<img class="w-16 h-16 rounded-lg object-cover group-hover:opacity-90 transition-opacity" data-alt="A slice of classic Italian Tiramisu cake on a clean white plate. Layers of espresso-soaked ladyfingers and mascarpone cream, heavily dusted with cocoa powder. Elegant, bright lighting, soft shadows, high-end cafe aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1xLQrSzASeNC94LU7qVK8mi3wGjI9mpU3eLh40Tvh1yMfi_p2cLj5xtWQSqHP5ElwkwkQqgSUrJ0qWX78kHOz8zGYPkdcehE9E5pnjh_VZDAqNhlczqh9Otj9tAzAAy98VMqMkHVlugkSWVfuHyeCgirZ3hNGsZp1n_lQv1gWo7dn_po71PEJG6LxlNyTvrG2hOLlrt2Oi0JKV5IXwoSIakCO4BBjBGAE6pDDO5X7sjWvxjSXDk0jXyNFqBxIMz9OL8di6KLo-AM">
+<div class="flex-1 min-w-0">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface truncate group-hover:text-primary transition-colors">Bánh tiramisu chuẩn vị Ý siêu đơn giản tại nhà</h4>
+<p class="font-label-md text-[11px] text-tertiary mt-1 text-label-md">Bánh ngọt</p>
+<p class="font-label-md text-[11px] text-tertiary text-label-md">5 giờ trước</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim flex-shrink-0"></div>
+</div>
+<!-- Post Item 3 -->
+<div class="flex gap-4 items-center group cursor-pointer">
+<img class="w-16 h-16 rounded-lg object-cover group-hover:opacity-90 transition-opacity" data-alt="Fresh Vietnamese spring rolls (Gỏi cuốn) arranged neatly on a ceramic plate. Translucent rice paper revealing pink shrimp, fresh herbs, and pork. Served with a side of rich peanut dipping sauce. Bright, fresh, healthy food photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjzeczSOCWXyncfIUP_Yk44_lxlL6COye_kkelg6QtKFjgRPUFA3pNj1YaJPEIxzKEGOXZQrQb_iUXxLStfGjtB-Ueqdj8RcbPWNjGQD_sQI62fUF5OrHlpT-f-7pr-pla68HJxKbTEaYs_Z1FqZifyEog8MpASOusWH4_-eQL_1OYQgUwauhuVmdM5SKDNdf7ACpq3cECRnmiKV1nngIyjZQzcgXwViMpbPUAsKh-yWXJMC6kP3_xpDBHgn7kdkXHgIW1VUDoEic">
+<div class="flex-1 min-w-0">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface truncate group-hover:text-primary transition-colors">Gỏi cuốn tôm thịt thanh mát cho ngày hè</h4>
+<p class="font-label-md text-[11px] text-tertiary mt-1 text-label-md">Món ăn nhẹ</p>
+<p class="font-label-md text-[11px] text-tertiary text-label-md">1 ngày trước</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim flex-shrink-0"></div>
+</div>
+<!-- Post Item 4 -->
+<div class="flex gap-4 items-center group cursor-pointer">
+<img class="w-16 h-16 rounded-lg object-cover group-hover:opacity-90 transition-opacity" data-alt="A rich, vibrant bowl of Vietnamese chicken curry (Cà ri gà) with chunks of chicken, potatoes, and carrots in a yellow coconut curry broth. Served with crusty baguette slices on the side. Warm, comforting lighting, rustic wooden table background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7vdQceRAO00Veo_VB9u_7hOwIyGC-OsFDKLg7IiHNPS73Gze-_EK4BjdfTff96VfyFUSaIk7Ueggrxb2nk_RWDC9jzSYVBR8dkUAN4oW0vt3ZzemSdGbY0q8E66jVC1U2NA6y9_fOuHiqZgMm9OYMtGiparMFqzPY9UCpQtuiD4mJVMMBLtlfj4nEC6Q8G7nXdTR8cIH6lpO_cH7lMFJ718hLWDLglV1IYy3bUfTV7263j8oVIHA96DQ-g_d7tQWkCfF2tTkpO_I">
+<div class="flex-1 min-w-0">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface truncate group-hover:text-primary transition-colors">Cách nấu cà ri gà béo thơm, ăn là ghiền</h4>
+<p class="font-label-md text-[11px] text-tertiary mt-1 text-label-md">Món chính</p>
+<p class="font-label-md text-[11px] text-tertiary text-label-md">2 ngày trước</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim flex-shrink-0"></div>
+</div>
+<!-- Post Item 5 -->
+<div class="flex gap-4 items-center group cursor-pointer">
+<img class="w-16 h-16 rounded-lg object-cover group-hover:opacity-90 transition-opacity" data-alt="A tall glass of creamy, pale green avocado coconut smoothie (Sinh tố bơ sữa dừa). Garnished with a slice of fresh avocado on the rim. Placed on a light, summery background with bright natural sunlight casting soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl95ByQW6lkh9MV-ScGR_dgV-uNIdtEmsB9830WO6SxGzXFSTBe9B22-ZaVSBnlOHZdC34Qi-rs-TvXwE-SinqI3Daj4yGBO06IN_oHNLJn5HxVFYn6L5qTVFqWfkyCrJpQtfpXHfmEpx8LjOnN_P1BkNEApk6END3Mq6lBTTNzV7jQNlxEvdLBgGimhmrAP2mC8Yd14Sw1Amx2TZquwYs6f2y77E79QaW7vSt_VvjIvcjza3RL4Dovaxx9ilDCvCJgjoZrZSClns">
+<div class="flex-1 min-w-0">
+<h4 class="font-body-md text-body-md font-semibold text-on-surface truncate group-hover:text-primary transition-colors">Sinh tố bơ sữa dừa mát lạnh bổ dưỡng</h4>
+<p class="font-label-md text-[11px] text-tertiary mt-1 text-label-md">Đồ uống</p>
+<p class="font-label-md text-[11px] text-tertiary text-label-md">2 ngày trước</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim flex-shrink-0"></div>
+</div>
+</div>
+</div>
+</div>
+
+<partial name="_AdminPageEnd" />
+
+
+
+
+
+
+

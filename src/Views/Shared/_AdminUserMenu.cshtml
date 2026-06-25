@@ -1,0 +1,29 @@
+<div class="relative" data-admin-user-menu>
+    <button type="button"
+            data-admin-user-menu-toggle
+            class="flex items-center gap-4 cursor-pointer rounded-lg px-2 py-1 hover:bg-surface-container-low transition-colors"
+            aria-expanded="false"
+            aria-haspopup="true">
+        <img class="w-10 h-10 rounded-full object-cover" alt="Admin"
+             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXi_JvpvYIL3nOkVeiinXnla1vk3k2jO7yyEt7YPxVkyPRxtRTaDkyj_PPyoYpefw54Qery2e-pO1A55yUP3QmkzczW2nLKnuzH1Z0KbrAP87fEv-Z_FQ3BP9yrsxPYFFEjySoRKBbtzxY48wtdhaWyloKdYnbJCBUEzJ0fQpgya1yuUu4CzMpqeeIl0oFECx5oAwdM-l0f8cnCp95S2aZngjeJYqoPVG0V1zHJ9EwsrR72bn0g37wMgs-_gXvsIAUbCthLmKds3U">
+        <div class="hidden sm:block text-left">
+            <p class="font-headline-sm text-[14px] leading-tight text-on-surface">Admin</p>
+            <p class="font-label-md text-[11px] text-on-surface-variant">Quản trị viên</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant" data-admin-user-menu-chevron>expand_more</span>
+    </button>
+
+    <div data-admin-user-menu-dropdown
+         class="absolute top-full right-0 pt-2 w-48 hidden z-50">
+        <div class="bg-surface-container-lowest rounded-lg shadow-lg border border-outline-variant overflow-hidden">
+            <form asp-controller="Manage" asp-action="Logout" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit"
+                        class="w-full flex items-center gap-2 px-4 py-3 text-left hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[20px]">logout</span>
+                    <span class="font-body-md text-body-md text-on-surface">Đăng xuất</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

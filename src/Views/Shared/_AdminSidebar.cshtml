@@ -1,0 +1,48 @@
+@{
+    var activeMenu = ViewData["ActiveMenu"]?.ToString() ?? "dashboard";
+    string NavClass(string key) => activeMenu == key
+        ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container text-on-primary font-semibold transition-transform active:translate-x-1 duration-200"
+        : "flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all active:translate-x-1 duration-200 group";
+    string IconClass(string key) => activeMenu == key
+        ? "material-symbols-outlined"
+        : "material-symbols-outlined group-hover:text-primary transition-colors";
+}
+
+<!-- TopNavBar (Mobile only) -->
+<header class="md:hidden shadow-sm bg-surface flex justify-between items-center h-16 px-gutter w-full fixed top-0 z-40">
+    <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+        <img alt="Nấu Ngon Mỗi Ngày" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI8GkcXFihihmQQm3fUO6LOHF9tABqSgwhPF4rfNLH8ns9fS8YfHyXHb1gKKWIObQcI9i4M7DJ4RRSn4-4ZHFPpEm0HiS0sMbWMVz3BHQ6ne5ZSLX1BgtDzXNXmdlfm_pe855N0GaesFmN5xi02jwz6XQsfLfwb4OCLx3nQox-KpDz1PE1-EGrLAhlDpBNSHVooN1Zg6qjOXlRSjYUgScvP9mGO-uhpzu914AbUBkm-7PMB3hWRvInSGjsDxBYB8ioufiEvc-nxXk">
+    </div>
+</header>
+
+<!-- SideNavBar -->
+<aside class="hidden md:flex bg-surface-container-lowest shadow-sm h-screen w-64 flex-col fixed left-0 top-0 z-30 pt-6">
+    <div class="px-6 mb-8 flex items-center gap-3 justify-between">
+        <img alt="Nấu Ngon Mỗi Ngày" class="w-full h-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI8GkcXFihihmQQm3fUO6LOHF9tABqSgwhPF4rfNLH8ns9fS8YfHyXHb1gKKWIObQcI9i4M7DJ4RRSn4-4ZHFPpEm0HiS0sMbWMVz3BHQ6ne5ZSLX1BgtDzXNXmdlfm_pe855N0GaesFmN5xi02jwz6XQsfLfwb4OCLx3nQox-KpDz1PE1-EGrLAhlDpBNSHVooN1Zg6qjOXlRSjYUgScvP9mGO-uhpzu914AbUBkm-7PMB3hWRvInSGjsDxBYB8ioufiEvc-nxXk">
+    </div>
+    <nav class="flex-1 overflow-y-auto px-4 flex flex-col gap-1 p-stack-md">
+        <a class="@NavClass("dashboard")" asp-controller="Admin" asp-action="Index">
+            <span class="@IconClass("dashboard")" style="@(activeMenu == "dashboard" ? "font-variation-settings: 'FILL' 1;" : "")">dashboard</span>
+            <span class="font-body-md text-body-md">Trang chủ</span>
+        </a>
+        <a class="@NavClass("categories")" asp-controller="ManagerCategories" asp-action="Index">
+            <span class="@IconClass("categories")">format_list_bulleted</span>
+            <span class="font-body-md text-body-md @(activeMenu != "categories" ? "group-hover:text-primary transition-colors" : "")">Danh mục</span>
+        </a>
+        <a class="@NavClass("recipes")" href="#">
+            <span class="@IconClass("recipes")">soup_kitchen</span>
+            <span class="font-body-md text-body-md @(activeMenu != "recipes" ? "group-hover:text-primary transition-colors" : "")">Công thức</span>
+        </a>
+        <a class="@NavClass("articles")" href="#">
+            <span class="@IconClass("articles")">edit_document</span>
+            <span class="font-body-md text-body-md @(activeMenu != "articles" ? "group-hover:text-primary transition-colors" : "")">Bài viết</span>
+        </a>
+        <a class="@NavClass("members")" href="#">
+            <span class="@IconClass("members")">group</span>
+            <span class="font-body-md text-body-md @(activeMenu != "members" ? "group-hover:text-primary transition-colors" : "")">Thành viên</span>
+        </a>
+    </nav>
+</aside>
+
+<partial name="_AdminHeader" />

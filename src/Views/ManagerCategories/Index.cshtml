@@ -1,0 +1,101 @@
+@model IEnumerable<Category>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["ActiveMenu"] = "categories";
+    ViewData["Title"] = "Quản lý danh mục";
+    ViewData["HeaderTitle"] = "Danh mục";
+    ViewData["HeaderSubtitle"] = "Quản lý danh sách danh mục công thức";
+}
+
+@functions {
+    (string Label, string BadgeClass) GetStatusBadge(int status) => status switch
+    {
+        (int)RecordStatus.Active => ("Hoạt động", "bg-green-100 text-green-700 border-green-200"),
+        (int)RecordStatus.Draft => ("Nháp", "bg-yellow-100 text-yellow-700 border-yellow-200"),
+        _ => ("Ẩn", "bg-gray-100 text-gray-600 border-gray-200")
+    };
+}
+
+<partial name="_AdminPageStart" />
+
+<div class="admin-toolbar">
+    <a asp-controller="ManagerCategories" asp-action="Action" class="admin-btn-primary">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Thêm danh mục
+    </a>
+</div>
+
+<div class="admin-card">
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Color</th>
+                    <th>Status</th>
+                    <th class="text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-on-surface-variant py-8">
+                            Chưa có danh mục nào. Hãy thêm danh mục đầu tiên.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        var (statusLabel, statusClass) = GetStatusBadge(item.Status);
+                        <tr>
+                            <td>
+                                <span class="font-medium text-on-surface">@item.Name</span>
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(item.Color))
+                                {
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-md border border-outline-variant shrink-0" style="background-color: @item.Color"></span>
+                                        <span class="text-on-surface-variant font-mono text-sm">@item.Color</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-on-surface-variant">—</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border @statusClass">
+                                    @statusLabel
+                                </span>
+                            </td>
+                            <td>
+                                <div class="flex items-center justify-end gap-2">
+                                    <a asp-controller="ManagerCategories" asp-action="Action" asp-route-id="@item.Id"
+                                       class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-primary-container hover:bg-primary-fixed transition-colors"
+                                       title="Sửa">
+                                        <span class="material-symbols-outlined text-[18px]">edit</span>
+                                    </a>
+                                    <form asp-controller="ManagerCategories" asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline"
+                                          onsubmit="return confirm('Bạn có chắc muốn xóa danh mục này?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit"
+                                                class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-red-600 hover:bg-red-50 transition-colors"
+                                                title="Xóa">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_AdminPageEnd" />

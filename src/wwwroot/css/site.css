@@ -45,3 +45,136 @@
   margin-right: 16px;
   flex-shrink: 0;
 }
+
+.chart-grid {
+  stroke: #e4e2e2;
+  stroke-dasharray: 4 4;
+}
+
+/* Admin layout: offset fixed header + gap before content */
+.admin-main {
+  padding-top: calc(5rem + 1.25rem);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .admin-main {
+    padding-top: calc(6.5rem + 1.5rem);
+    margin-left: 16rem;
+    width: calc(100% - 16rem);
+  }
+}
+
+/* Admin page skeleton — dùng _AdminPageStart / _AdminPageEnd cho mọi trang admin */
+.admin-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  min-width: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 3rem;
+  min-height: calc(100vh - 6.5rem);
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .admin-content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.admin-card {
+  background-color: #fffbff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e4e2e2;
+  overflow: hidden;
+}
+
+.admin-card--padded {
+  padding: 1.5rem;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.admin-table thead {
+  background-color: #f5f3f3;
+  border-bottom: 1px solid #e4e2e2;
+}
+
+.admin-table th {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1c1b1b;
+}
+
+.admin-table tbody tr {
+  border-bottom: 1px solid #e4e2e2;
+  transition: background-color 0.15s;
+}
+
+.admin-table tbody tr:hover {
+  background-color: rgba(245, 243, 243, 0.5);
+}
+
+.admin-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.admin-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ff6b00;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+
+.admin-btn-primary:hover {
+  background-color: #e66000;
+  color: #fff;
+}
+
+.admin-link-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #494646;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.admin-link-back:hover {
+  color: #ff6b00;
+}

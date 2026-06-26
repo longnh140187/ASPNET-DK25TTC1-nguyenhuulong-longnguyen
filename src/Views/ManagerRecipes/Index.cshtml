@@ -1,10 +1,10 @@
-@model IEnumerable<Category>
+@model IEnumerable<Recipe>
 @{
     Layout = "_LayoutAdmin";
-    ViewData["ActiveMenu"] = "categories";
-    ViewData["Title"] = "Quản lý danh mục";
-    ViewData["HeaderTitle"] = "Danh mục";
-    ViewData["HeaderSubtitle"] = "Quản lý danh sách danh mục công thức";
+    ViewData["ActiveMenu"] = "recipes";
+    ViewData["Title"] = "Quản lý công thức";
+    ViewData["HeaderTitle"] = "Công thức";
+    ViewData["HeaderSubtitle"] = "Quản lý danh sách công thức nấu ăn";
 }
 
 @functions {
@@ -19,9 +19,9 @@
 <partial name="_AdminPageStart" />
 
 <div class="admin-toolbar">
-    <a asp-controller="ManagerCategories" asp-action="Action" class="admin-btn-primary">
+    <a asp-controller="ManagerRecipes" asp-action="Action" class="admin-btn-primary">
         <span class="material-symbols-outlined text-[18px]">add</span>
-        Thêm danh mục
+        Thêm công thức
     </a>
 </div>
 
@@ -31,7 +31,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Color</th>
+                    <th class="text-center">Featured</th>
                     <th>Status</th>
                     <th class="text-right">Action</th>
                 </tr>
@@ -41,7 +41,7 @@
                 {
                     <tr>
                         <td colspan="4" class="text-center text-on-surface-variant py-8">
-                            Chưa có danh mục nào. Hãy thêm danh mục đầu tiên.
+                            Chưa có công thức nào. Hãy thêm công thức đầu tiên.
                         </td>
                     </tr>
                 }
@@ -52,19 +52,18 @@
                         var (statusLabel, statusClass) = GetStatusBadge(item.Status);
                         <tr>
                             <td>
-                                <span class="font-medium text-on-surface">@item.Name</span>
+                                <span class="font-medium text-on-surface">@item.Title</span>
                             </td>
-                            <td>
-                                @if (!string.IsNullOrWhiteSpace(item.Color))
+                            <td class="text-center">
+                                @if (item.IsFeatured)
                                 {
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-6 h-6 rounded-md border border-outline-variant shrink-0" style="background-color: @item.Color"></span>
-                                        <span class="text-on-surface-variant font-mono text-sm">@item.Color</span>
-                                    </div>
+                                    <span class="material-symbols-outlined text-yellow-500 text-[20px]"
+                                          style="font-variation-settings: 'FILL' 1"
+                                          title="Công thức nổi bật">star</span>
                                 }
                                 else
                                 {
-                                    <span class="text-on-surface-variant">—</span>
+                                    <span class="material-symbols-outlined text-gray-300 text-[20px]" title="Không nổi bật">star</span>
                                 }
                             </td>
                             <td>
@@ -74,14 +73,19 @@
                             </td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">
-                                    <a asp-controller="ManagerCategories" asp-action="Action" asp-route-id="@item.Id"
+                                    <a asp-controller="ManagerRecipes" asp-action="Action" asp-route-id="@item.Id"
                                        class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-primary-container hover:bg-primary-fixed transition-colors"
                                        title="Sửa">
                                         <span class="material-symbols-outlined text-[18px]">edit</span>
                                     </a>
-                                    <form asp-controller="ManagerCategories" asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline"
+                                    <a asp-controller="ManagerRecipes" asp-action="Action" asp-route-cloneId="@item.Id"
+                                       class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                                       title="Nhân bản">
+                                        <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                                    </a>
+                                    <form asp-controller="ManagerRecipes" asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline"
                                           data-admin-delete-form
-                                          data-confirm-message="Bạn có chắc muốn xóa danh mục này?">
+                                          data-confirm-message="Bạn có chắc muốn xóa công thức này?">
                                         @Html.AntiForgeryToken()
                                         <button type="submit"
                                                 class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-red-600 hover:bg-red-50 transition-colors"

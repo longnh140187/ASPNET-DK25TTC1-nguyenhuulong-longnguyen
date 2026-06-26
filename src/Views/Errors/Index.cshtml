@@ -1,0 +1,51 @@
+@model ErrorPageViewModel
+@{
+    Layout = "_LayoutError";
+    ViewData["Title"] = Model.Title;
+    var heading = Model.Title.Contains(" - ")
+        ? Model.Title[(Model.Title.IndexOf(" - ") + 3)..]
+        : Model.Title;
+}
+
+<div class="max-w-lg w-full text-center">
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-fixed text-primary-container mb-6">
+        <span class="material-symbols-outlined text-[40px]">@Model.Icon</span>
+    </div>
+
+    <p class="text-6xl font-bold text-primary-container mb-2">@Model.StatusCode</p>
+    <h1 class="text-2xl font-bold text-on-surface mb-3">@heading</h1>
+    <p class="text-on-surface-variant mb-8 leading-relaxed">@Model.Message</p>
+
+    <div class="flex flex-wrap items-center justify-center gap-3">
+        <a asp-controller="Home" asp-action="Index"
+           class="inline-flex items-center gap-2 bg-primary-container hover:bg-orange-600 text-white font-medium py-2.5 px-5 rounded-lg transition-colors text-sm">
+            <span class="material-symbols-outlined text-[18px]">home</span>
+            Về trang chủ
+        </a>
+
+        @if (Model.StatusCode is 401 or 403)
+        {
+            <a asp-controller="Manage" asp-action="Login"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
+                <span class="material-symbols-outlined text-[18px]">login</span>
+                Đăng nhập
+            </a>
+        }
+        else if (Model.StatusCode == 404)
+        {
+            <a asp-controller="Recipes" asp-action="Index"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
+                <span class="material-symbols-outlined text-[18px]">soup_kitchen</span>
+                Xem công thức
+            </a>
+        }
+        else if (Model.StatusCode >= 500)
+        {
+            <button type="button" onclick="location.reload()"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
+                <span class="material-symbols-outlined text-[18px]">refresh</span>
+                Thử lại
+            </button>
+        }
+    </div>
+</div>

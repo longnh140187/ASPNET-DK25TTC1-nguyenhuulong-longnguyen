@@ -84,7 +84,8 @@
                                         <span class="material-symbols-outlined text-[18px]">edit</span>
                                     </a>
                                     <form asp-controller="ManagerUsers" asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline"
-                                          onsubmit="return confirm('Bạn có chắc muốn xóa thành viên này?');">
+                                          data-admin-delete-form
+                                          data-confirm-message="Bạn có chắc muốn xóa thành viên này?">
                                         @Html.AntiForgeryToken()
                                         <button type="submit"
                                                 class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-red-600 hover:bg-red-50 transition-colors"

@@ -30,7 +30,7 @@
             <span class="@IconClass("categories")">format_list_bulleted</span>
             <span class="font-body-md text-body-md @(activeMenu != "categories" ? "group-hover:text-primary transition-colors" : "")">Danh mục</span>
         </a>
-        <a class="@NavClass("recipes")" href="#">
+        <a class="@NavClass("recipes")" asp-controller="ManagerRecipes" asp-action="Index">
             <span class="@IconClass("recipes")">soup_kitchen</span>
             <span class="font-body-md text-body-md @(activeMenu != "recipes" ? "group-hover:text-primary transition-colors" : "")">Công thức</span>
         </a>

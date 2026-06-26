@@ -1,0 +1,93 @@
+@model IEnumerable<Blog>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["ActiveMenu"] = "articles";
+    ViewData["Title"] = "Quản lý bài viết";
+    ViewData["HeaderTitle"] = "Bài viết";
+    ViewData["HeaderSubtitle"] = "Quản lý danh sách bài viết blog";
+}
+
+@functions {
+    (string Label, string BadgeClass) GetStatusBadge(BlogStatus status) => status switch
+    {
+        BlogStatus.PUBLISHED => ("Đã xuất bản", "bg-green-100 text-green-700 border-green-200"),
+        BlogStatus.DRAFT => ("Nháp", "bg-yellow-100 text-yellow-700 border-yellow-200"),
+        _ => ("Nháp", "bg-yellow-100 text-yellow-700 border-yellow-200")
+    };
+}
+
+<partial name="_AdminPageStart" />
+
+<div class="admin-toolbar">
+    <a asp-controller="ManagerBlogs" asp-action="Action" class="admin-btn-primary">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Thêm bài viết
+    </a>
+</div>
+
+<div class="admin-card">
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th class="text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-on-surface-variant py-8">
+                            Chưa có bài viết nào. Hãy thêm bài viết đầu tiên.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        var (statusLabel, statusClass) = GetStatusBadge(item.Status);
+                        <tr>
+                            <td>
+                                <span class="font-medium text-on-surface">@item.Title</span>
+                            </td>
+                            <td>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border @statusClass">
+                                    @statusLabel
+                                </span>
+                            </td>
+                            <td>
+                                <div class="flex items-center justify-end gap-2">
+                                    <a asp-controller="ManagerBlogs" asp-action="Action" asp-route-id="@item.Id"
+                                       class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-primary-container hover:bg-primary-fixed transition-colors"
+                                       title="Sửa">
+                                        <span class="material-symbols-outlined text-[18px]">edit</span>
+                                    </a>
+                                    <a asp-controller="ManagerBlogs" asp-action="Action" asp-route-cloneId="@item.Id"
+                                       class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                                       title="Nhân bản">
+                                        <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                                    </a>
+                                    <form asp-controller="ManagerBlogs" asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline"
+                                          data-admin-delete-form
+                                          data-confirm-message="Bạn có chắc muốn xóa bài viết này?">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit"
+                                                class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-red-600 hover:bg-red-50 transition-colors"
+                                                title="Xóa">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_AdminPageEnd" />

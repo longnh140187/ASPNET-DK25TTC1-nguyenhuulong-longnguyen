@@ -1,3 +1,4 @@
+@model AdminDashboardViewModel
 @{
     Layout = "_LayoutAdmin";
     ViewData["Title"] = "Dashboard quản trị";
@@ -15,7 +16,7 @@
 <div class="rounded-md bg-primary-fixed flex items-center justify-center text-primary-container w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">description</span></div>
 <div class="text-left">
 <p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Tổng bài viết</p>
-<h3 class="font-headline-md text-on-surface text-headline-sm">1,245</h3>
+<h3 class="font-headline-md text-on-surface text-headline-sm">@Model.TotalBlogs.ToString("N0")</h3>
 </div>
 </div>
 <!-- Card 2 -->
@@ -23,7 +24,7 @@
 <div class="rounded-md bg-secondary-fixed flex items-center justify-center text-secondary w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">soup_kitchen</span></div>
 <div class="text-left">
 <p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Công thức</p>
-<h3 class="font-headline-md text-on-surface text-headline-sm">856</h3>
+<h3 class="font-headline-md text-on-surface text-headline-sm">@Model.TotalRecipes.ToString("N0")</h3>
 </div>
 </div>
 <!-- Card 3 -->
@@ -31,7 +32,7 @@
 <div class="rounded-md bg-tertiary-fixed flex items-center justify-center text-tertiary w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">person</span></div>
 <div class="text-left">
 <p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Thành viên</p>
-<h3 class="font-headline-md text-on-surface text-headline-sm">12,568</h3>
+<h3 class="font-headline-md text-on-surface text-headline-sm">@Model.TotalMembers.ToString("N0")</h3>
 </div>
 </div>
 <!-- Card 4 -->
@@ -39,7 +40,7 @@
 <div class="rounded-md bg-error-container flex items-center justify-center text-error w-10 h-10 flex-shrink-0"><span class="material-symbols-outlined text-headline-sm" style="font-variation-settings: &quot;FILL&quot; 1;">chat</span></div>
 <div class="text-left">
 <p class="font-label-md text-label-md text-on-surface-variant mb-0.5">Bình luận</p>
-<h3 class="font-headline-md text-on-surface text-headline-sm">2,358</h3>
+<h3 class="font-headline-md text-on-surface text-headline-sm">-</h3>
 </div>
 </div>
 </div>

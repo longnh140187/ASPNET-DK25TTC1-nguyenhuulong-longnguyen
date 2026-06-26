@@ -34,7 +34,7 @@
             <span class="@IconClass("recipes")">soup_kitchen</span>
             <span class="font-body-md text-body-md @(activeMenu != "recipes" ? "group-hover:text-primary transition-colors" : "")">Công thức</span>
         </a>
-        <a class="@NavClass("articles")" href="#">
+        <a class="@NavClass("articles")" asp-controller="ManagerBlogs" asp-action="Index">
             <span class="@IconClass("articles")">edit_document</span>
             <span class="font-body-md text-body-md @(activeMenu != "articles" ? "group-hover:text-primary transition-colors" : "")">Bài viết</span>
         </a>

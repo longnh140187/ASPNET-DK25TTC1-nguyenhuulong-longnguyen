@@ -1,0 +1,101 @@
+@model BlogFormViewModel
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["ActiveMenu"] = "articles";
+    var isClone = ViewData["IsClone"] as bool? == true;
+    var pageTitle = isClone ? "Nhân bản bài viết" : Model.IsEdit ? "Sửa bài viết" : "Thêm bài viết";
+    ViewData["Title"] = pageTitle;
+    ViewData["HeaderTitle"] = pageTitle;
+    ViewData["HeaderSubtitle"] = isClone
+        ? "Chỉnh sửa thông tin và lưu thành bài viết mới"
+        : Model.IsEdit ? "Cập nhật nội dung bài viết" : "Tạo bài viết mới";
+}
+
+<partial name="_AdminPageStart" />
+
+<a asp-controller="ManagerBlogs" asp-action="Index" class="admin-link-back">
+    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+    Quay lại danh sách
+</a>
+
+<div class="admin-card admin-card--padded">
+    <form asp-controller="ManagerBlogs" asp-action="Action" asp-route-id="@Model.Id"
+          method="post" enctype="multipart/form-data" class="space-y-6" id="blogForm">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm"></div>
+
+        <div>
+            <label asp-for="Title" class="block text-sm font-medium text-on-surface mb-1.5"></label>
+            <input asp-for="Title"
+                   class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary-container focus:ring-1 focus:ring-primary-container text-sm outline-none" />
+            <span asp-validation-for="Title" class="text-red-600 text-xs mt-1 block"></span>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-on-surface mb-1.5">Ảnh thumbnail</label>
+            <div class="flex flex-col sm:flex-row gap-4 items-start">
+                @if (!string.IsNullOrEmpty(Model.ThumbnailUrl))
+                {
+                    <img id="thumbnailPreview" src="@Model.ThumbnailUrl" alt="Thumbnail"
+                         class="w-32 h-32 object-cover rounded-lg border border-outline-variant" />
+                }
+                else
+                {
+                    <div id="thumbnailPreviewPlaceholder"
+                         class="w-32 h-32 rounded-lg border border-dashed border-outline-variant flex items-center justify-center text-on-surface-variant text-xs text-center px-2">
+                        Chưa có ảnh
+                    </div>
+                    <img id="thumbnailPreview" src="" alt="Thumbnail" class="hidden w-32 h-32 object-cover rounded-lg border border-outline-variant" />
+                }
+                <div class="flex-1">
+                    <input asp-for="ThumbnailFile" type="file" accept=".png,.jpg,.jpeg,.gif,.webp,.svg,image/*"
+                           id="thumbnailFileInput"
+                           class="block w-full text-sm text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary-fixed file:text-primary-container file:font-medium hover:file:bg-orange-100" />
+                    <input type="hidden" asp-for="ThumbnailUrl" id="ThumbnailUrl" />
+                    <p class="text-xs text-on-surface-variant mt-2">Hỗ trợ: png, jpg, jpeg, gif, webp, svg. Tối đa 5MB.</p>
+                    <span asp-validation-for="ThumbnailFile" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label asp-for="Summary" class="block text-sm font-medium text-on-surface mb-1.5"></label>
+            <textarea asp-for="Summary" rows="2"
+                      class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary-container focus:ring-1 focus:ring-primary-container text-sm outline-none resize-y"></textarea>
+        </div>
+
+        <div>
+            <label asp-for="Content" class="block text-sm font-medium text-on-surface mb-1.5"></label>
+            <textarea asp-for="Content" rows="8"
+                      class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest focus:border-primary-container focus:ring-1 focus:ring-primary-container text-sm outline-none resize-y"></textarea>
+            <span asp-validation-for="Content" class="text-red-600 text-xs mt-1 block"></span>
+        </div>
+
+        <div class="max-w-xs">
+            <label asp-for="Status" class="block text-sm font-medium text-on-surface mb-1.5"></label>
+            <select asp-for="Status"
+                    class="w-full px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-sm outline-none focus:border-primary-container">
+                <option value="@BlogStatus.DRAFT">Nháp</option>
+                <option value="@BlogStatus.PUBLISHED">Đã xuất bản</option>
+            </select>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+            <button type="submit" class="admin-btn-primary">
+                <span class="material-symbols-outlined text-[18px]">save</span>
+                @(Model.IsEdit ? "Cập nhật" : "Tạo mới")
+            </button>
+            <a asp-controller="ManagerBlogs" asp-action="Index"
+               class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors text-sm">
+                Hủy
+            </a>
+        </div>
+    </form>
+</div>
+
+<partial name="_AdminPageEnd" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/blog-form.js" asp-append-version="true"></script>
+}

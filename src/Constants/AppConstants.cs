@@ -17,7 +17,8 @@ public static class AppConstants
     public const string RoleAdmin = "Admin";
     public const string RoleUser = "User";
 
-    // Upload (for future use)
+    // Upload
     public const string UploadFolder = "uploads/recipes";
+    public const string UploadBlogFolder = "uploads/blogs";
     public const long MaxUploadBytes = 5 * 1024 * 1024; // 5MB
 }

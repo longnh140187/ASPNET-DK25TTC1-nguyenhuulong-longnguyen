@@ -12,6 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<User> Users => Set<User>();
     public DbSet<Recipe> Recipes => Set<Recipe>();
+    public DbSet<Blog> Blogs => Set<Blog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,6 +21,7 @@ public class AppDbContext : DbContext
         ConfigureCategory(modelBuilder);
         ConfigureUser(modelBuilder);
         ConfigureRecipe(modelBuilder);
+        ConfigureBlog(modelBuilder);
     }
 
     public override int SaveChanges()
@@ -131,6 +133,34 @@ public class AppDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(e => e.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+    }
+
+    private static void ConfigureBlog(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Blog>(entity =>
+        {
+            entity.ToTable("blogs");
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Id).HasColumnName("id").HasMaxLength(36);
+            entity.Property(e => e.Title).HasColumnName("title").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.Slug).HasColumnName("slug").HasMaxLength(255).IsRequired();
+            entity.Property(e => e.ThumbnailUrl).HasColumnName("thumbnail_url").HasMaxLength(500);
+            entity.Property(e => e.Summary).HasColumnName("summary").HasColumnType("text");
+            entity.Property(e => e.Content).HasColumnName("content").HasColumnType("longtext").IsRequired();
+            entity.Property(e => e.Status)
+                .HasColumnName("status")
+                .HasColumnType("enum('DRAFT','PUBLISHED')")
+                .HasConversion(
+                    v => v.ToString(),
+                    v => Enum.Parse<BlogStatus>(v))
+                .HasDefaultValue(BlogStatus.DRAFT);
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at").HasColumnType("datetime(3)");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at").HasColumnType("datetime(3)");
+            entity.Property(e => e.DeletedAt).HasColumnName("deleted_at").HasColumnType("datetime(3)");
+
+            entity.HasIndex(e => e.Slug).IsUnique();
         });
     }
 

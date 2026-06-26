@@ -20,3 +20,9 @@ public enum RecipeDifficulty
     MEDIUM = 1,
     HARD = 2
 }
+
+public enum BlogStatus
+{
+    DRAFT,
+    PUBLISHED
+}

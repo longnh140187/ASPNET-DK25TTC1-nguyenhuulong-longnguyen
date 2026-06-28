@@ -47,10 +47,51 @@ Website chia sẻ công thức nấu ăn, món ăn Việt Nam và quốc tế.
 
 ## Hướng dẫn chạy
 
+### 1. Cấu hình môi trường
+
+```bash
+cp .env.example .env
+```
+
+Chỉnh `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` cho MySQL local/Docker.
+
+### 2. Cài EF tools (lần đầu)
+
 ```bash
 cd src
-dotnet restore
+dotnet tool restore
+```
+
+### 3. Tạo database và seed dữ liệu mẫu
+
+```bash
+cd src
+dotnet ef database update
+```
+
+Migration `SeedFullDummyData` sẽ import toàn bộ dữ liệu demo (danh mục, công thức, blog, admin).
+
+### 4. Chạy website
+
+```bash
 dotnet run
 ```
 
 Mở trình duyệt tại: `http://localhost:5000`
+
+### Đăng nhập Admin
+
+- URL: `/manage`
+- Username: `admin`
+- Password: mật khẩu đã cấu hình khi tạo tài khoản admin ban đầu
+
+### Cập nhật lại dữ liệu seed (khi chỉnh data trên máy dev)
+
+Sau khi chỉnh sửa nội dung trong database, chạy lại:
+
+```bash
+python3 setup/generate-seed-migration.py
+cd src && dotnet ef database update
+```
+
+Script sẽ export các bản ghi đang active (`deleted_at IS NULL`) vào migration `SeedFullDummyData`.

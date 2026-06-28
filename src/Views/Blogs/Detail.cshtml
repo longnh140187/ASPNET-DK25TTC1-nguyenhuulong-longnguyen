@@ -1,0 +1,137 @@
+@model BlogDetailViewModel
+@using RecipeWebsite.Web.ViewModels
+@{
+    ViewData["Title"] = Model.Blog.Title;
+    var blog = Model.Blog;
+    var hasThumbnail = !string.IsNullOrWhiteSpace(blog.ThumbnailUrl);
+    var shareUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}";
+    var paragraphs = BlogDetailViewModel.SplitParagraphs(blog.Content).ToList();
+}
+
+<header class="relative w-full h-[50vh] min-h-[360px] flex items-end overflow-hidden">
+    <div class="absolute inset-0 z-0 bg-surface-container">
+        @if (hasThumbnail)
+        {
+            <img alt="@blog.Title"
+                 class="w-full h-full object-cover"
+                 src="@blog.ThumbnailUrl"/>
+        }
+        else
+        {
+            <div class="w-full h-full bg-gradient-to-br from-primary-container/80 to-primary/90"></div>
+        }
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+    </div>
+    <div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-gutter pb-10 md:pb-12 w-full">
+        <nav class="flex items-center gap-2 text-label-md text-white/80 mb-4 flex-wrap">
+            <a class="hover:text-white transition-colors" asp-controller="Home" asp-action="Index">Trang chủ</a>
+            <span>/</span>
+            <a class="hover:text-white transition-colors" asp-controller="Blogs" asp-action="Index">Blog</a>
+            <span>/</span>
+            <span class="text-white line-clamp-1">@blog.Title</span>
+        </nav>
+        <div class="flex flex-col gap-4 max-w-3xl">
+            <span class="inline-block px-3 py-1 rounded-full @Model.TagClass font-label-md text-label-md uppercase tracking-wider w-fit">
+                @Model.TagLabel
+            </span>
+            <h1 class="text-white font-headline-lg text-headline-lg md:text-display-lg font-bold leading-tight">
+                @blog.Title
+            </h1>
+            <div class="flex flex-wrap items-center gap-6 text-white/90 font-body-md text-body-md">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                    @BlogIndexViewModel.FormatDate(blog.CreatedAt)
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-12 flex flex-col lg:flex-row gap-12">
+    
+    <article class="lg:w-2/3 min-w-0">
+        <div class="content-rich-text font-body-lg text-body-lg leading-relaxed">
+            @if (!string.IsNullOrWhiteSpace(blog.Summary))
+            {
+                <p class="font-medium text-xl text-primary italic mb-8">@blog.Summary</p>
+            }
+            @foreach (var paragraph in paragraphs)
+            {
+                <p>@paragraph</p>
+            }
+        </div>
+
+        <div class="mt-10 pt-8 border-t border-outline-variant flex flex-wrap gap-3">
+            <button type="button" id="printBlogBtn"
+                    class="inline-flex items-center gap-2 border-2 border-primary text-primary px-5 py-2.5 rounded-lg font-headline-sm hover:bg-primary-fixed transition-all">
+                <span class="material-symbols-outlined text-[20px]">print</span>
+                In bài viết
+            </button>
+            <div class="relative z-30">
+                <button type="button" id="shareBlogBtn" aria-expanded="false"
+                        data-share-title="@blog.Title"
+                        data-share-text="@blog.Summary"
+                        data-share-url="@shareUrl"
+                        class="inline-flex items-center gap-2 p-2.5 border-2 border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-variant transition-all">
+                    <span class="material-symbols-outlined">share</span>
+                </button>
+                <div id="shareMenu"
+                     class="hidden absolute top-full left-0 mt-2 z-50 min-w-[220px] bg-surface-container-lowest border border-outline-variant rounded-xl shadow-lg p-2"
+                     role="menu">
+                    <button type="button" id="shareCopyLink" role="menuitem"
+                            class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-container text-sm flex items-center gap-2 text-on-surface">
+                        <span class="material-symbols-outlined text-[18px]">link</span>
+                        Sao chép liên kết
+                    </button>
+                    <p id="shareFeedback" class="hidden px-3 py-2 text-xs text-primary-container"></p>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <aside class="lg:w-1/3 space-y-12">
+        @if (Model.PopularBlogs.Any())
+        {
+            <div>
+                <h4 class="font-headline-sm text-headline-sm mb-6 pb-2 border-b-2 border-primary-container inline-block">
+                    Xem nhiều nhất
+                </h4>
+                <div class="space-y-6">
+                    @foreach (var item in Model.PopularBlogs)
+                    {
+                        <partial name="_BlogPopularItem" model="item"/>
+                    }
+                </div>
+            </div>
+        }
+    </aside>
+</main>
+
+@if (Model.RelatedBlogs.Any())
+{
+    <section class="bg-surface-container-low py-section-gap">
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+                <div>
+                    <h2 class="font-headline-lg text-headline-lg mb-2">Có thể bạn quan tâm</h2>
+                    <p class="text-on-surface-variant text-body-lg">Khám phá thêm nhiều bài viết và mẹo hay khác</p>
+                </div>
+                <a class="text-primary font-bold hover:underline flex items-center gap-2 group"
+                   asp-controller="Blogs" asp-action="Index">
+                    Xem tất cả
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+                @for (var i = 0; i < Model.RelatedBlogs.Count; i++)
+                {
+                    <partial name="_BlogRelatedCard" model="@(Model.RelatedBlogs[i], i)"/>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts {
+    <script src="~/js/blog-detail.js" asp-append-version="true"></script>
+}

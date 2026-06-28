@@ -1,4 +1,3 @@
-// Tailwind theme config (Stitch design tokens)
 tailwind.config = {
   darkMode: "class",
   theme: {

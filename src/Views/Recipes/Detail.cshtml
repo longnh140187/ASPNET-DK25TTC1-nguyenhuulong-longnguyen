@@ -1,40 +1,68 @@
 @model RecipeWebsite.Web.ViewModels.RecipeDetailViewModel
 @{
-ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Title;
+    var hasThumbnail = !string.IsNullOrWhiteSpace(Model.ThumbnailUrl);
+    var shareUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}";
 }
 
 <div class="recipe-detail max-w-container-max mx-auto px-margin-mobile md:px-gutter py-8 space-y-section-gap">
-    <!-- Hero Section -->
+    
     <section
-        class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center bg-surface-container-lowest p-6 md:p-10 rounded-xl shadow-sm overflow-hidden">
-        <div class="relative rounded-lg overflow-hidden group aspect-square lg:aspect-video md:aspect-square">
-            <img alt="@Model.Title"
-                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                 src="@Model.ThumbnailUrl">
+        class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center bg-surface-container-lowest p-6 md:p-10 rounded-xl shadow-sm">
+        <div class="relative rounded-lg overflow-hidden group aspect-square lg:aspect-video md:aspect-square bg-surface-container">
+            @if (hasThumbnail)
+            {
+                <img alt="@Model.Title"
+                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                     src="@Model.ThumbnailUrl">
+            }
+            else
+            {
+                <div class="w-full h-full flex items-center justify-center text-on-surface-variant">
+                    <span class="material-symbols-outlined text-6xl">image</span>
+                </div>
+            }
             @if (Model.IsPopular)
             {
-            <div
-                class="absolute top-4 left-4 bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-md text-label-md shadow-md">
-                Phổ biến nhất
-            </div>
+                <div
+                    class="absolute top-4 left-4 bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-md text-label-md shadow-md">
+                    Nổi bật
+                </div>
             }
         </div>
-        <div class="space-y-stack-md">
-            <nav class="flex items-center gap-2 text-label-md text-on-surface-variant">
-                <a class="hover:text-primary" asp-controller="Recipes" asp-action="Index">@Model.CategoryName</a>
+        <div class="space-y-stack-md overflow-visible">
+            <nav class="flex items-center gap-2 text-label-md text-on-surface-variant flex-wrap">
+                <a class="hover:text-primary" asp-controller="Recipes" asp-action="Index">Công thức</a>
                 <span>/</span>
-                <span class="text-on-surface">@Model.SubCategoryName</span>
+                @if (!string.IsNullOrWhiteSpace(Model.CategoryId))
+                {
+                    <a class="hover:text-primary"
+                       asp-controller="Recipes" asp-action="Index"
+                       asp-route-categoryIds="@Model.CategoryId">@Model.CategoryName</a>
+                    <span>/</span>
+                }
+                <span class="text-on-surface">@Model.Title</span>
             </nav>
             <h1 class="font-headline-lg text-headline-lg md:text-display-lg text-on-surface leading-tight">@Model.Title</h1>
-            <p class="text-body-lg text-on-surface-variant leading-relaxed">@Model.Summary</p>
+            @if (!string.IsNullOrWhiteSpace(Model.Summary))
+            {
+                <p class="text-body-lg text-on-surface-variant leading-relaxed">@Model.Summary</p>
+            }
+            else if (!string.IsNullOrWhiteSpace(Model.Content))
+            {
+                <p class="text-body-lg text-on-surface-variant leading-relaxed">@Model.Content</p>
+            }
             <div class="flex flex-wrap gap-stack-lg py-4 border-y border-outline-variant">
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary">schedule</span>
-                    <div>
-                        <p class="text-label-md font-bold text-on-surface">Thời gian</p>
-                        <p class="text-body-md text-on-surface-variant">@Model.CookingTimeMinutes phút</p>
+                @if (Model.CookingTimeMinutes is > 0)
+                {
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">schedule</span>
+                        <div>
+                            <p class="text-label-md font-bold text-on-surface">Thời gian</p>
+                            <p class="text-body-md text-on-surface-variant">@Model.CookingTimeMinutes phút</p>
+                        </div>
                     </div>
-                </div>
+                }
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">equalizer</span>
                     <div>
@@ -42,111 +70,143 @@ ViewData["Title"] = Model.Title;
                         <p class="text-body-md text-on-surface-variant">@Model.DifficultyLabel</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary"
-                          style="font-variation-settings: 'FILL' 1;">star</span>
-                    <div>
-                        <p class="text-label-md font-bold text-on-surface">Đánh giá</p>
-                        <p class="text-body-md text-on-surface-variant">@Model.RatingLabel</p>
+                @if (Model.Servings is > 0)
+                {
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">restaurant</span>
+                        <div>
+                            <p class="text-label-md font-bold text-on-surface">Khẩu phần</p>
+                            <p class="text-body-md text-on-surface-variant">@Model.Servings người</p>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
-            <div class="flex flex-wrap gap-stack-md pt-4">
-                <button type="button"
-                        class="bg-primary-container text-on-primary px-8 py-3 rounded-lg font-headline-sm flex items-center gap-2 hover:opacity-90 transition-all active:scale-95">
-                    <span class="material-symbols-outlined">favorite</span> Lưu vào yêu thích
-                </button>
-                <button type="button"
+            <div class="flex flex-wrap gap-stack-md pt-4 overflow-visible">
+                
+                <button type="button" id="printRecipeBtn"
                         class="border-2 border-primary text-primary px-6 py-3 rounded-lg font-headline-sm flex items-center gap-2 hover:bg-primary-fixed transition-all active:scale-95">
                     <span class="material-symbols-outlined">print</span> In công thức
                 </button>
-                <button type="button"
-                        class="p-3 border-2 border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-variant transition-all">
-                    <span class="material-symbols-outlined">share</span>
-                </button>
+                <div class="relative z-30">
+                    <button type="button" id="shareRecipeBtn" aria-expanded="false" aria-haspopup="true"
+                            data-share-title="@Model.Title"
+                            data-share-text="@Model.Summary"
+                            data-share-url="@shareUrl"
+                            class="p-3 border-2 border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-variant transition-all">
+                        <span class="material-symbols-outlined">share</span>
+                    </button>
+                    <div id="shareMenu"
+                         class="hidden absolute top-full left-0 mt-2 z-50 min-w-[220px] bg-surface-container-lowest border border-outline-variant rounded-xl shadow-lg p-2"
+                         role="menu">
+                        <button type="button" id="shareCopyLink" role="menuitem"
+                                class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-container text-sm flex items-center gap-2 text-on-surface">
+                            <span class="material-symbols-outlined text-[18px]">link</span>
+                            Sao chép liên kết
+                        </button>
+                        <button type="button" id="shareNativeBtn" role="menuitem"
+                                class="hidden w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-container text-sm flex items-center gap-2 text-on-surface">
+                            <span class="material-symbols-outlined text-[18px]">ios_share</span>
+                            Chia sẻ qua ứng dụng
+                        </button>
+                        <p id="shareFeedback" class="hidden px-3 py-2 text-xs text-primary-container"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-stack-lg">
         <div class="lg:col-span-1 space-y-stack-lg">
-            <!-- Ingredients -->
+            
             <section class="bg-surface-container-low p-6 rounded-xl border border-outline-variant">
                 <h2 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">shopping_basket</span> Nguyên liệu
                 </h2>
-                <ul class="space-y-4">
-                    @foreach (var ingredient in Model.Ingredients)
-                    {
-                    <li class="flex items-start gap-3 group cursor-pointer">
-                        <input
-                            class="mt-1 rounded text-primary focus:ring-primary-container border-outline cursor-pointer"
-                            type="checkbox">
-                        <span
-                            class="text-body-lg text-on-surface group-hover:text-primary transition-colors">@ingredient</span>
-                    </li>
-                    }
-                </ul>
+                @if (!Model.Ingredients.Any())
+                {
+                    <p class="text-body-md text-on-surface-variant">Chưa có thông tin nguyên liệu.</p>
+                }
+                else
+                {
+                    <ul class="space-y-4">
+                        @foreach (var ingredient in Model.Ingredients)
+                        {
+                            <li class="flex items-start gap-3 group cursor-pointer">
+                                <input
+                                    class="mt-1 rounded text-primary focus:ring-primary-container border-outline cursor-pointer"
+                                    type="checkbox">
+                                <span
+                                    class="text-body-lg text-on-surface group-hover:text-primary transition-colors">@ingredient</span>
+                            </li>
+                        }
+                    </ul>
+                }
             </section>
 
             @if (Model.Nutrition is not null)
             {
-            <!-- Nutrition -->
-            <section class="bg-inverse-surface text-inverse-on-surface p-6 rounded-xl shadow-lg">
-                <h2 class="font-headline-sm text-headline-sm mb-6 flex items-center gap-2">
-                    <span class="material-symbols-outlined">analytics</span> Giá trị dinh dưỡng
-                </h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-surface-container/10 p-3 rounded-lg text-center">
-                        <p class="text-label-md opacity-80 uppercase tracking-wider">Calories</p>
-                        <p class="text-headline-md font-bold">@Model.Nutrition.Calories</p>
+                
+                <section class="bg-inverse-surface text-inverse-on-surface p-6 rounded-xl shadow-lg">
+                    <h2 class="font-headline-sm text-headline-sm mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined">analytics</span> Giá trị dinh dưỡng
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-surface-container/10 p-3 rounded-lg text-center">
+                            <p class="text-label-md opacity-80 uppercase tracking-wider">Calories</p>
+                            <p class="text-headline-md font-bold">@Model.Nutrition.Calories</p>
+                        </div>
+                        <div class="bg-surface-container/10 p-3 rounded-lg text-center">
+                            <p class="text-label-md opacity-80 uppercase tracking-wider">Protein</p>
+                            <p class="text-headline-md font-bold">@Model.Nutrition.Protein</p>
+                        </div>
+                        <div class="bg-surface-container/10 p-3 rounded-lg text-center">
+                            <p class="text-label-md opacity-80 uppercase tracking-wider">Chất béo</p>
+                            <p class="text-headline-md font-bold">@Model.Nutrition.Fat</p>
+                        </div>
+                        <div class="bg-surface-container/10 p-3 rounded-lg text-center">
+                            <p class="text-label-md opacity-80 uppercase tracking-wider">Carbs</p>
+                            <p class="text-headline-md font-bold">@Model.Nutrition.Carbs</p>
+                        </div>
                     </div>
-                    <div class="bg-surface-container/10 p-3 rounded-lg text-center">
-                        <p class="text-label-md opacity-80 uppercase tracking-wider">Protein</p>
-                        <p class="text-headline-md font-bold">@Model.Nutrition.Protein</p>
-                    </div>
-                    <div class="bg-surface-container/10 p-3 rounded-lg text-center">
-                        <p class="text-label-md opacity-80 uppercase tracking-wider">Chất béo</p>
-                        <p class="text-headline-md font-bold">@Model.Nutrition.Fat</p>
-                    </div>
-                    <div class="bg-surface-container/10 p-3 rounded-lg text-center">
-                        <p class="text-label-md opacity-80 uppercase tracking-wider">Carbs</p>
-                        <p class="text-headline-md font-bold">@Model.Nutrition.Carbs</p>
-                    </div>
-                </div>
-            </section>
+                </section>
             }
         </div>
 
-        <!-- Instructions -->
         <div class="lg:col-span-2">
             <section class="bg-surface-container-lowest p-6 md:p-8 rounded-xl border border-outline-variant shadow-sm">
                 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-8 flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span> Các bước thực
                     hiện
                 </h2>
-                <div class="space-y-10">
-                    @for (var i = 0; i < Model.Steps.Count; i++)
-                    {
-                    var step = Model.Steps[i];
-                    <div class="flex items-start">
-                        <div class="step-number" data-step="@(i + 1)"></div>
-                        <div class="space-y-2">
-                            <h3 class="font-headline-sm text-headline-sm text-on-surface">@step.Title</h3>
-                            <p class="text-body-lg text-on-surface-variant">@step.Description</p>
-                        </div>
-                    </div>
-                    }
-                </div>
-                @if (!string.IsNullOrWhiteSpace(Model.ChefTip))
+                @if (!Model.Steps.Any())
                 {
-                <div class="mt-12 p-6 bg-secondary-container/20 border-l-4 border-secondary rounded-r-lg">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="material-symbols-outlined text-secondary">lightbulb</span>
-                        <span class="font-headline-sm text-secondary">Mẹo từ Chef</span>
+                    <p class="text-body-lg text-on-surface-variant">Chưa có hướng dẫn các bước nấu.</p>
+                }
+                else
+                {
+                    <div class="space-y-10">
+                        @for (var i = 0; i < Model.Steps.Count; i++)
+                        {
+                            var step = Model.Steps[i];
+                            <div class="flex items-start">
+                                <div class="step-number" data-step="@(i + 1)"></div>
+                                <div class="space-y-2">
+                                    <h3 class="font-headline-sm text-headline-sm text-on-surface">@step.Title</h3>
+                                    <p class="text-body-lg text-on-surface-variant">@step.Description</p>
+                                </div>
+                            </div>
+                        }
                     </div>
-                    <p class="text-body-lg text-on-secondary-container italic">"@Model.ChefTip"</p>
-                </div>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Content) && !string.IsNullOrWhiteSpace(Model.Summary))
+                {
+                    <div class="mt-12 p-6 bg-secondary-container/20 border-l-4 border-secondary rounded-r-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-secondary">menu_book</span>
+                            <span class="font-headline-sm text-secondary">Ghi chú thêm</span>
+                        </div>
+                        <p class="text-body-lg text-on-secondary-container">@Model.Content</p>
+                    </div>
                 }
             </section>
         </div>
@@ -154,5 +214,5 @@ ViewData["Title"] = Model.Title;
 </div>
 
 @section Scripts {
-<script src="~/js/recipes-detail.js" asp-append-version="true"></script>
+    <script src="~/js/recipes-detail.js" asp-append-version="true"></script>
 }

@@ -1,10 +1,10 @@
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsite.Web.Constants;
 using RecipeWebsite.Web.Data;
 using RecipeWebsite.Web.Models;
+using RecipeWebsite.Web.Services;
 using RecipeWebsite.Web.ViewModels;
 
 namespace RecipeWebsite.Web.Controllers;
@@ -202,7 +202,7 @@ public class ManagerBlogsController : Controller
 
     private async Task<string> GenerateUniqueSlugAsync(string title, string? excludeId = null)
     {
-        var baseSlug = Slugify(title);
+        var baseSlug = SlugHelper.FromTitle(title, "bai-viet");
         var slug = baseSlug;
         var counter = 1;
 
@@ -215,18 +215,5 @@ public class ManagerBlogsController : Controller
         }
 
         return slug;
-    }
-
-    private static string Slugify(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "bai-viet";
-
-        var result = text.Trim().ToLowerInvariant();
-        result = Regex.Replace(result, @"[\s]+", "-");
-        result = Regex.Replace(result, @"[^\p{L}\p{N}-]", "");
-        result = Regex.Replace(result, @"-+", "-").Trim('-');
-
-        return string.IsNullOrEmpty(result) ? "bai-viet" : result;
     }
 }

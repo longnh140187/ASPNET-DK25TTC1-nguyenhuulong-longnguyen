@@ -1,11 +1,9 @@
-using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsite.Web.Data;
 using RecipeWebsite.Web.Models;
+using RecipeWebsite.Web.Services;
 using RecipeWebsite.Web.ViewModels;
 
 namespace RecipeWebsite.Web.Controllers;
@@ -126,7 +124,7 @@ public class ManagerCategoriesController : Controller
 
     private async Task<string> GenerateUniqueSlugAsync(string name, string? excludeId = null)
     {
-        var baseSlug = Slugify(name);
+        var baseSlug = SlugHelper.FromTitle(name, "danh-muc");
         var slug = baseSlug;
         var counter = 1;
 
@@ -139,26 +137,5 @@ public class ManagerCategoriesController : Controller
         }
 
         return slug;
-    }
-
-    private static string Slugify(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "danh-muc";
-
-        var normalized = text.Normalize(NormalizationForm.FormD);
-        var sb = new StringBuilder();
-
-        foreach (var c in normalized)
-        {
-            if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                sb.Append(c);
-        }
-
-        var result = sb.ToString().Normalize(NormalizationForm.FormC).ToLowerInvariant();
-        result = Regex.Replace(result, @"[^a-z0-9\s-]", "");
-        result = Regex.Replace(result, @"[\s-]+", "-").Trim('-');
-
-        return string.IsNullOrEmpty(result) ? "danh-muc" : result;
     }
 }

@@ -1,0 +1,40 @@
+@model ComingSoonViewModel
+@{
+    Layout = "_LayoutError";
+    ViewData["Title"] = Model.Heading;
+}
+
+<div class="max-w-xl w-full text-center">
+    <div class="relative inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary-fixed text-primary-container mb-6">
+        <span class="material-symbols-outlined text-[48px]">restaurant</span>
+        <span class="absolute -top-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-white text-xs font-bold shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">schedule</span>
+        </span>
+    </div>
+
+    <p class="font-script text-2xl text-secondary italic font-serif mb-2">Nấu Ngon Mỗi Ngày</p>
+    <h1 class="text-3xl md:text-4xl font-bold text-on-surface mb-4">@Model.Heading</h1>
+    <p class="text-on-surface-variant mb-8 leading-relaxed">
+        @if (string.IsNullOrWhiteSpace(Model.FeatureName))
+        {
+            @:Chúng tôi đang chuẩn bị nội dung mới cho bạn. Hãy quay lại sau nhé!
+        }
+        else
+        {
+            @:Mục <strong class="text-on-surface">@Model.FeatureName</strong> đang được phát triển. Cảm ơn bạn đã quan tâm!
+        }
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-3">
+        <a asp-controller="Home" asp-action="Index"
+           class="inline-flex items-center gap-2 bg-primary-container hover:bg-orange-600 text-white font-medium py-2.5 px-5 rounded-full transition-colors text-sm shadow-md shadow-orange-200">
+            <span class="material-symbols-outlined text-[18px]">home</span>
+            Về trang chủ
+        </a>
+        <a asp-controller="Recipes" asp-action="Index"
+           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
+            <span class="material-symbols-outlined text-[18px]">soup_kitchen</span>
+            Xem công thức
+        </a>
+    </div>
+</div>

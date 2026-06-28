@@ -1,0 +1,46 @@
+@model (RecipeWebsite.Web.Models.Blog Blog, int Index)
+@using RecipeWebsite.Web.ViewModels
+@{
+    var blog = Model.Blog;
+    var (tagLabel, tagClass) = BlogIndexViewModel.GetTagForBlog(blog, Model.Index);
+    var hasThumbnail = !string.IsNullOrWhiteSpace(blog.ThumbnailUrl);
+}
+
+<article class="bg-surface-container-lowest recipe-card-shadow rounded-xl overflow-hidden flex flex-col h-full border border-outline-variant group">
+    <a asp-controller="Blogs" asp-action="Detail" asp-route-slug="@blog.Slug" class="flex flex-col h-full">
+        <div class="relative h-64 overflow-hidden bg-surface-container">
+            @if (hasThumbnail)
+            {
+                <img alt="@blog.Title"
+                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                     src="@blog.ThumbnailUrl" loading="lazy"/>
+            }
+            else
+            {
+                <div class="w-full h-full flex items-center justify-center text-on-surface-variant">
+                    <span class="material-symbols-outlined text-5xl">article</span>
+                </div>
+            }
+            <span class="absolute top-4 left-4 @tagClass text-label-md font-label-md px-3 py-1 rounded-full shadow-lg">
+                @tagLabel
+            </span>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+            <div class="flex items-center gap-2 text-label-md text-on-surface-variant mb-3">
+                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                <span>@BlogIndexViewModel.FormatDate(blog.CreatedAt)</span>
+            </div>
+            <h2 class="font-headline-md text-headline-md text-on-surface mb-3 line-clamp-2 group-hover:text-primary transition-colors">@blog.Title</h2>
+            @if (!string.IsNullOrWhiteSpace(blog.Summary))
+            {
+                <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">@blog.Summary</p>
+            }
+            <div class="mt-auto">
+                <span class="inline-flex items-center gap-1 font-bold text-primary">
+                    Đọc thêm
+                    <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+                </span>
+            </div>
+        </div>
+    </a>
+</article>

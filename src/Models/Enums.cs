@@ -26,3 +26,10 @@ public enum BlogStatus
     DRAFT,
     PUBLISHED
 }
+
+public enum RecipeSortBy
+{
+    Newest,
+    Popular,
+    Fastest
+}

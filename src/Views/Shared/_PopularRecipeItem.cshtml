@@ -1,0 +1,31 @@
+@model (Recipe Recipe, int Rank)
+@{
+    var recipe = Model.Recipe;
+    var rank = Model.Rank;
+    var hasThumbnail = !string.IsNullOrWhiteSpace(recipe.ThumbnailUrl);
+}
+
+<a class="flex gap-4 items-center group" asp-controller="Recipes" asp-action="Detail" asp-route-slug="@recipe.Slug">
+    <div class="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+        @if (hasThumbnail)
+        {
+            <img alt="@recipe.Title" class="w-full h-full object-cover" src="@recipe.ThumbnailUrl" loading="lazy">
+        }
+        else
+        {
+            <div class="w-full h-full flex items-center justify-center text-on-surface-variant">
+                <i class="fa-regular fa-image text-lg"></i>
+            </div>
+        }
+        <div class="absolute bottom-0 right-0 bg-primary-container text-white text-[10px] px-1 font-bold rounded-tl-sm">@rank</div>
+    </div>
+    <div>
+        <h4 class="font-semibold text-on-surface group-hover:text-primary-container text-sm line-clamp-1">@recipe.Title</h4>
+        @if (recipe.CookingTimeMinutes is > 0)
+        {
+            <div class="flex items-center gap-3 text-xs text-on-surface-variant mt-1">
+                <span><i class="fa-regular fa-clock"></i> @recipe.CookingTimeMinutes phút</span>
+            </div>
+        }
+    </div>
+</a>

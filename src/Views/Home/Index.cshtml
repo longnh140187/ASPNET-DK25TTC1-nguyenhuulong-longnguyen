@@ -1,8 +1,8 @@
+@model HomeIndexViewModel
 @{
     ViewData["Title"] = "Trang chủ";
 }
 
-<!-- BEGIN: Hero Section -->
 <section class="relative pt-12 pb-20 overflow-hidden bg-primary-fixed/30">
 <div class="container mx-auto px-4 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
 <div class="z-10 space-y-6 max-w-xl">
@@ -13,14 +13,12 @@
 </h2>
 <p class="text-body-lg text-on-surface-variant">Khám phá hàng ngàn công thức nấu ăn ngon, dễ làm và những bí quyết giúp bữa cơm gia đình thêm ấm cúng.</p>
 <div class="flex flex-wrap gap-4 pt-2">
-<button class="bg-primary-container hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-full flex items-center gap-2 transition-colors shadow-md shadow-orange-200">
+<a asp-controller="Recipes" asp-action="Index"
+   class="bg-primary-container hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-full flex items-center gap-2 transition-colors shadow-md shadow-orange-200">
 <i class="fa-solid fa-fire text-yellow-300"></i> Khám phá ngay
-            </button>
-<button class="bg-surface-container-lowest border border-outline-variant hover:border-outline text-on-surface font-semibold py-3 px-6 rounded-full flex items-center gap-2 transition-colors shadow-sm">
-<i class="fa-regular fa-circle-play text-on-surface-variant"></i> Xem video
-            </button>
+</a>
 </div>
-<!-- Stats -->
+
 <div class="grid grid-cols-3 gap-4 pt-8 border-t border-outline-variant mt-8">
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary-container">
@@ -53,37 +51,36 @@
 </div>
 <div class="relative z-0">
 <img alt="Hero food plate" class="w-full max-w-lg mx-auto rounded-full shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC370QMBRhCc8ocatKpd1SHDs3OM9kyYLyqoR4ulITLwyAf2cf4_pcOqmHkf1_gMDQ1tioJgOp1qNHArdpoXMs7GOfO3MTyJTxMDvJRu2hkUvvtdXFu711P_bGGsZZ2ghxDwpr6loG29lxpll1ui1UAdvE9Vw8DqNnSastiEWFhns5FjmcY7o2-G-yIh5t4S41B2kKxU7Qwh7AO0Nx3o4IxB3HyZNI3Y7PmSWgbuLbPDy7zDO-4hyIVZicmrQvrSqkoZhgxTzYn1Rg">
-<!-- Decorative elements could go here -->
+
 </div>
 </div>
 </section>
-<!-- END: Hero Section -->
-<!-- BEGIN: Categories -->
+
 <section class="py-12 bg-surface-container-lowest w-full relative -mt-10 z-20">
 <div class="container mx-auto px-4 lg:px-8">
 <div class="bg-surface-container-lowest rounded-2xl shadow-lg border border-outline-variant p-6 overflow-x-auto no-scrollbar">
 <div class="flex items-stretch w-full min-w-[720px] lg:min-w-0">
-<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" href="#">
+<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" asp-controller="Recipes" asp-action="Index">
 <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-orange-50 text-2xl text-primary-container transition-all group-hover:bg-primary-container group-hover:text-white"><i class="fa-solid fa-bowl-food"></i></div>
 <span class="flex min-h-[2.5rem] items-center justify-center text-center text-label-md leading-snug text-on-surface group-hover:text-primary-container">Món ăn hàng ngày</span>
 </a>
-<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" href="#">
+<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" asp-controller="Recipes" asp-action="Index">
 <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-green-50 text-2xl text-secondary transition-all group-hover:bg-secondary group-hover:text-white"><i class="fa-solid fa-leaf"></i></div>
 <span class="flex min-h-[2.5rem] items-center justify-center text-center text-label-md leading-snug text-on-surface group-hover:text-secondary">Món chay thanh đạm</span>
 </a>
-<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" href="#">
+<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" asp-controller="Recipes" asp-action="Index">
 <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-yellow-50 text-2xl text-yellow-500 transition-all group-hover:bg-yellow-500 group-hover:text-white"><i class="fa-solid fa-cake-candles"></i></div>
 <span class="flex min-h-[2.5rem] items-center justify-center text-center text-label-md leading-snug text-on-surface group-hover:text-yellow-600">Bánh ngon mỗi ngày</span>
 </a>
-<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" href="#">
+<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" asp-controller="Recipes" asp-action="Index">
 <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-pink-50 text-2xl text-pink-500 transition-all group-hover:bg-pink-500 group-hover:text-white"><i class="fa-solid fa-martini-glass-citrus"></i></div>
 <span class="flex min-h-[2.5rem] items-center justify-center text-center text-label-md leading-snug text-on-surface group-hover:text-pink-600">Đồ uống hấp dẫn</span>
 </a>
-<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" href="#">
+<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" asp-controller="Recipes" asp-action="Index">
 <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-purple-50 text-2xl text-purple-500 transition-all group-hover:bg-purple-500 group-hover:text-white"><i class="fa-solid fa-earth-americas"></i></div>
 <span class="flex min-h-[2.5rem] items-center justify-center text-center text-label-md leading-snug text-on-surface group-hover:text-purple-600">Ẩm thực bốn phương</span>
 </a>
-<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" href="#">
+<a class="group flex flex-1 flex-col items-center gap-3 px-3 border-r border-outline-variant last:border-r-0" asp-controller="Recipes" asp-action="Index">
 <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-teal-50 text-2xl text-teal-500 transition-all group-hover:bg-teal-500 group-hover:text-white"><i class="fa-solid fa-lightbulb"></i></div>
 <span class="flex min-h-[2.5rem] items-center justify-center text-center text-label-md leading-snug text-on-surface group-hover:text-teal-600">Mẹo vặt nhà bếp</span>
 </a>
@@ -91,183 +88,59 @@
 </div>
 </div>
 </section>
-<!-- END: Categories -->
-<!-- BEGIN: Main Content Area -->
+
 <div class="container mx-auto px-4 lg:px-8 grid lg:grid-cols-3 gap-8 py-8">
-<!-- Left Column: Featured Recipes -->
+
 <div class="lg:col-span-2 space-y-8">
 <div class="flex justify-between items-end border-b border-outline-variant pb-2">
 <h2 class="text-headline-md text-on-surface flex items-center gap-2">
             Công thức nổi bật <i class="fa-solid fa-leaf text-secondary text-lg"></i>
 </h2>
-<a class="text-primary-container font-medium flex items-center gap-1 text-label-md" href="#">
+<a class="text-primary-container font-medium flex items-center gap-1 text-label-md" asp-controller="Recipes" asp-action="Index">
             Xem tất cả <i class="fa-solid fa-arrow-right"></i>
 </a>
 </div>
 <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-<!-- Recipe Card 1 -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow group border border-outline-variant">
-<div class="relative h-48">
-<img alt="Thịt kho tàu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLs3jJ_BFPCqPKaYBr_0CvneF4cIqs7mZ2Aa6GRiA5BD0TSaQbIKMYyX3ExScY1HBXTNZjYI0lmodgqPscMSOje3qoZUcdmFBSD4qJQykQcXJkv8rzr5rwsjFJ0ZdV3EyCox5rXgjTjksMEdm9XJM9mYlREJAK2F7wZsxklohEVklCu6foEoyURuXVVTxRg73ai5wDs6cYIsRF5OIRIpnPe6XOw3lMKYXM4YuIHpqDp_jrEtjjrHBB4q6mo">
-<span class="absolute top-3 left-3 bg-primary-container text-white text-xs font-semibold px-2 py-1 rounded">Món mặn</span>
-<div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
-<i class="fa-regular fa-clock"></i> 45 phút
-              </div>
-</div>
-<div class="p-4 space-y-2">
-<h3><a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-1">Thịt kho tàu đậm đà</a></h3>
-<p class="text-on-surface-variant text-body-md line-clamp-2">Cách làm thịt kho tàu thơm ngon, mềm rục, đưa cơm cho cả gia đình.</p>
-<div class="flex items-center gap-4 text-label-md text-on-surface-variant pt-2 border-t border-outline-variant mt-2">
-<span class="flex items-center gap-1"><i class="fa-regular fa-heart text-red-500"></i> 1.2K</span>
-<span class="flex items-center gap-1"><i class="fa-regular fa-eye"></i> 15K</span>
+@if (!Model.FeaturedRecipes.Any())
+{
+    <div class="sm:col-span-2 md:col-span-3 text-center py-12 text-on-surface-variant">
+        Chưa có công thức nổi bật.
+    </div>
+}
+else
+{
+    @foreach (var recipe in Model.FeaturedRecipes)
+    {
+        <partial name="_FeaturedRecipeCard" model="recipe" />
+    }
+}
 </div>
 </div>
-</div>
-<!-- Recipe Card 2 -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow group border border-outline-variant">
-<div class="relative h-48">
-<img alt="Canh chua chay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLsj31-dExYUG7oygYRzEPFq0VqGtc9Tuz-9euSd4Epb0z4NVMPUO3Y_6ikjDEwYCq4A2qcZAxHmiB9GkGOSaDezjmbV70jYeN6_n7zu5YaPRgPo48p95asMBEmnzBAmAMMPTjuGFIZlkJQORnkQeiOqL-k1xEkyOGcAr6ayunB7aXmGIrm_SQqr5Y7spX5U-tvlPE1eIFivKptSXysS6EkvhEtRuOypLk3cttfRidb0af3LxdPfnCgHjw">
-<span class="absolute top-3 left-3 bg-secondary text-white text-xs font-semibold px-2 py-1 rounded">Món chay</span>
-<div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
-<i class="fa-regular fa-clock"></i> 30 phút
-              </div>
-</div>
-<div class="p-4 space-y-2">
-<h3><a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-1">Canh chua chay thanh mát</a></h3>
-<p class="text-on-surface-variant text-body-md line-clamp-2">Vị chua thanh nhẹ, thanh đạm, tốt cho sức khỏe và dễ làm.</p>
-<div class="flex items-center gap-4 text-label-md text-on-surface-variant pt-2 border-t border-outline-variant mt-2">
-<span class="flex items-center gap-1"><i class="fa-regular fa-heart text-red-500"></i> 892</span>
-<span class="flex items-center gap-1"><i class="fa-regular fa-eye"></i> 8.7K</span>
-</div>
-</div>
-</div>
-<!-- Recipe Card 3 -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow group border border-outline-variant">
-<div class="relative h-48">
-<img alt="Mì Ý xốt bò băm" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLtS1VxaHl2lhi1sFMbZMd6pYjUG317FwRnMoak6SORk63EIJOWo9Jm1SgsJc74UA7MLk8gWigzQ8y015fSqKT80MDa_QUtKeflUplGACiTVUdXWNQrXxHUHfOYJTlDPf9GL3Aebg6IJAdvClRtmLawhtBkWptxBOe8H2DfHjv23-UYkyx_YniNDJZYpYI9FHR-ZY8jmUHIEpj4INMx4DRgOkgEuyvqu5gfODKNYeUABIDEH5AOaIZi50Zo">
-<span class="absolute top-3 left-3 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded">Món Âu</span>
-<div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
-<i class="fa-regular fa-clock"></i> 25 phút
-              </div>
-</div>
-<div class="p-4 space-y-2">
-<h3><a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-1">Mì Ý xốt bò băm</a></h3>
-<p class="text-on-surface-variant text-body-md line-clamp-2">Món mì Ý đơn giản với sốt bò băm đậm đà, chuẩn vị nhà hàng.</p>
-<div class="flex items-center gap-4 text-label-md text-on-surface-variant pt-2 border-t border-outline-variant mt-2">
-<span class="flex items-center gap-1"><i class="fa-regular fa-heart text-red-500"></i> 1.1K</span>
-<span class="flex items-center gap-1"><i class="fa-regular fa-eye"></i> 12K</span>
-</div>
-</div>
-</div>
-<!-- Recipe Card 4 -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow group border border-outline-variant">
-<div class="relative h-48">
-<img alt="Bánh Tiramisu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLsKicGaD8KHfnSDOAYFYZEuAf7YEVrZrT-mqm7BajMJ1mE5bEUTf8jlE5p8V11eUUPLgT-1SVHAMf2KN3EyRgRis9g0yRCNulseAV5vWaE9bTLvpUXRPzDO6MlumJ9MZlTGpeorgIn7LwlXf-4p6H3uC7-PHaZgA3jVoiZSIFHiGOcBh1RFEdHztichqg1tO4_e37HTycqMHixBwuG7jY238nBtmdYbSTXRlbqDIsmMrh53BA43GLGDkHU">
-<span class="absolute top-3 left-3 bg-pink-500 text-white text-xs font-semibold px-2 py-1 rounded">Bánh ngọt</span>
-<div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
-<i class="fa-regular fa-clock"></i> 20 phút
-              </div>
-</div>
-<div class="p-4 space-y-2">
-<h3><a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-1">Bánh Tiramisu béo ngậy</a></h3>
-<p class="text-on-surface-variant text-body-md line-clamp-2">Công thức làm bánh Tiramisu chuẩn vị Ý, thơm ngon, tan chảy.</p>
-<div class="flex items-center gap-4 text-label-md text-on-surface-variant pt-2 border-t border-outline-variant mt-2">
-<span class="flex items-center gap-1"><i class="fa-regular fa-heart text-red-500"></i> 756</span>
-<span class="flex items-center gap-1"><i class="fa-regular fa-eye"></i> 6.3K</span>
-</div>
-</div>
-</div>
-<!-- Recipe Card 5 -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow group border border-outline-variant">
-<div class="relative h-48">
-<img alt="Cá kho tộ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLva-UUaOSpuhbMRrSbU-V5Msrn2bt_Pz2r-ShetjKIb6BmR5Ynf3BH-9lsY7cJKPdLW_S2Fq9f06D_qMMpo6G3pbzymwBVCa-cL_nVOvmW1-R49eubU369HB5ApVkWbdG635oSVQcqBCk1d0wdqEPVa2I6AlcyEuAm7gYFr7o5degpf5KoHyo1fdjIz5wSqaCtQOQ7pY1UWmiCApl_C5w0w74XaHj4kQqPm44jy6-B076KqkAEeaA0DAQ">
-<span class="absolute top-3 left-3 bg-primary-container text-white text-xs font-semibold px-2 py-1 rounded">Món mặn</span>
-<div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
-<i class="fa-regular fa-clock"></i> 35 phút
-              </div>
-</div>
-<div class="p-4 space-y-2">
-<h3><a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-1">Cá kho tộ thơm lừng</a></h3>
-<p class="text-on-surface-variant text-body-md line-clamp-2">Cá kho tộ đậm đà, thơm lừng đưa cơm cho ngày mưa.</p>
-<div class="flex items-center gap-4 text-label-md text-on-surface-variant pt-2 border-t border-outline-variant mt-2">
-<span class="flex items-center gap-1"><i class="fa-regular fa-heart text-red-500"></i> 1K</span>
-<span class="flex items-center gap-1"><i class="fa-regular fa-eye"></i> 9.2K</span>
-</div>
-</div>
-</div>
-<!-- Recipe Card 6 -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow group border border-outline-variant">
-<div class="relative h-48">
-<img alt="Đậu hũ xào rau củ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLvY3NqcOAO66wqCTQOsP_t-BSHHg9E3f7aYWe62KRvPk7F0bRrFu5T-t3BIQ9vjvO1uSEN7wd4bb3zbwOIiTe7KbSSoSptSuVPu9CHGbv74v7hMYUrY3wVGcnT2YwTtjOZXVW43v1T5lNBwCMR4lBQ0_JZ3HrzJxlrPImxy3IeCvjkAM2x4wULe80gbJgF9G-uud6i1k1Zh4nSJI4WLpajh9MzzLtQth5ScvRmu31-qPAa00IO0KOiHvZo">
-<span class="absolute top-3 left-3 bg-secondary text-white text-xs font-semibold px-2 py-1 rounded">Món chay</span>
-<div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
-<i class="fa-regular fa-clock"></i> 20 phút
-              </div>
-</div>
-<div class="p-4 space-y-2">
-<h3><a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-1">Đậu hũ xào rau củ</a></h3>
-<p class="text-on-surface-variant text-body-md line-clamp-2">Món chay thanh đạm, đủ dinh dưỡng và rất tốt cho sức khỏe.</p>
-<div class="flex items-center gap-4 text-label-md text-on-surface-variant pt-2 border-t border-outline-variant mt-2">
-<span class="flex items-center gap-1"><i class="fa-regular fa-heart text-red-500"></i> 677</span>
-<span class="flex items-center gap-1"><i class="fa-regular fa-eye"></i> 6.1K</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Right Column: Sidebar -->
+
 <div class="space-y-8">
-<!-- Popular Recipes List -->
+
 <div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant shadow-sm">
 <h3 class="text-headline-sm text-on-surface mb-4 flex items-center gap-2 border-b border-outline-variant pb-2">
 <i class="fa-solid fa-heart text-primary-container"></i> Món ăn được yêu thích
           </h3>
 <div class="space-y-4">
-<a class="flex gap-4 items-center group" asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da">
-<div class="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
-<img alt="Gà chiên nước mắm" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLs3jJ_BFPCqPKaYBr_0CvneF4cIqs7mZ2Aa6GRiA5BD0TSaQbIKMYyX3ExScY1HBXTNZjYI0lmodgqPscMSOje3qoZUcdmFBSD4qJQykQcXJkv8rzr5rwsjFJ0ZdV3EyCox5rXgjTjksMEdm9XJM9mYlREJAK2F7wZsxklohEVklCu6foEoyURuXVVTxRg73ai5wDs6cYIsRF5OIRIpnPe6XOw3lMKYXM4YuIHpqDp_jrEtjjrHBB4q6mo">
-<div class="absolute bottom-0 right-0 bg-primary-container text-white text-[10px] px-1 font-bold rounded-tl-sm">1</div>
+@if (!Model.RandomPopularRecipes.Any())
+{
+    <p class="text-sm text-on-surface-variant text-center py-4">Chưa có công thức nào.</p>
+}
+else
+{
+    @for (var i = 0; i < Model.RandomPopularRecipes.Count; i++)
+    {
+        <partial name="_PopularRecipeItem" model="(Model.RandomPopularRecipes[i], i + 1)" />
+    }
+}
 </div>
-<div>
-<h4 class="font-semibold text-on-surface group-hover:text-primary-container text-sm line-clamp-1">Gà chiên nước mắm</h4>
-<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-1">
-<span class=""><i class="fa-solid fa-heart text-red-400"></i> 2.3K</span>
-<span class=""><i class="fa-regular fa-clock"></i> 40 phút</span>
-</div>
-</div>
-</a>
-<a class="flex gap-4 items-center group" asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da">
-<div class="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
-<img alt="Bún bò Huế" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLva-UUaOSpuhbMRrSbU-V5Msrn2bt_Pz2r-ShetjKIb6BmR5Ynf3BH-9lsY7cJKPdLW_S2Fq9f06D_qMMpo6G3pbzymwBVCa-cL_nVOvmW1-R49eubU369HB5ApVkWbdG635oSVQcqBCk1d0wdqEPVa2I6AlcyEuAm7gYFr7o5degpf5KoHyo1fdjIz5wSqaCtQOQ7pY1UWmiCApl_C5w0w74XaHj4kQqPm44jy6-B076KqkAEeaA0DAQ">
-<div class="absolute bottom-0 right-0 bg-primary-container text-white text-[10px] px-1 font-bold rounded-tl-sm">2</div>
-</div>
-<div>
-<h4 class="font-semibold text-on-surface group-hover:text-primary-container text-sm line-clamp-1">Bún bò Huế</h4>
-<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-1">
-<span class=""><i class="fa-solid fa-heart text-red-400"></i> 1.8K</span>
-<span class=""><i class="fa-regular fa-clock"></i> 60 phút</span>
-</div>
-</div>
-</a>
-<a class="flex gap-4 items-center group" asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da">
-<div class="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
-<img alt="Salad ức gà sốt mè" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLsj31-dExYUG7oygYRzEPFq0VqGtc9Tuz-9euSd4Epb0z4NVMPUO3Y_6ikjDEwYCq4A2qcZAxHmiB9GkGOSaDezjmbV70jYeN6_n7zu5YaPRgPo48p95asMBEmnzBAmAMMPTjuGFIZlkJQORnkQeiOqL-k1xEkyOGcAr6ayunB7aXmGIrm_SQqr5Y7spX5U-tvlPE1eIFivKptSXysS6EkvhEtRuOypLk3cttfRidb0af3LxdPfnCgHjw">
-<div class="absolute bottom-0 right-0 bg-primary-container text-white text-[10px] px-1 font-bold rounded-tl-sm">3</div>
-</div>
-<div>
-<h4 class="font-semibold text-on-surface group-hover:text-primary-container text-sm line-clamp-1">Salad ức gà sốt mè</h4>
-<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-1">
-<span class=""><i class="fa-solid fa-heart text-red-400"></i> 1.5K</span>
-<span class=""><i class="fa-regular fa-clock"></i> 20 phút</span>
-</div>
-</div>
-</a>
-</div>
-<button class="w-full mt-6 py-2 border border-primary-container text-primary-container font-medium rounded-full hover:bg-primary-container hover:text-white transition-colors text-sm">
+<a asp-controller="Recipes" asp-action="Index" class="block w-full mt-6 py-2 border border-primary-container text-primary-container font-medium rounded-full hover:bg-primary-container hover:text-white transition-colors text-sm text-center">
             Xem tất cả món ngon <i class="fa-solid fa-arrow-right text-xs"></i>
-</button>
+</a>
 </div>
-<!-- Newsletter Signup -->
+
 <div class="bg-surface-container-low rounded-2xl p-6 relative overflow-hidden border border-outline-variant shadow-sm">
 <div class="relative z-10">
 <h3 class="font-bold text-on-surface mb-2 text-headline-sm">Đăng ký nhận bản tin</h3>
@@ -277,134 +150,40 @@
 <button class="w-full bg-primary-container hover:bg-orange-600 text-white font-medium py-2 rounded-full transition-colors text-sm" type="submit">Đăng ký</button>
 </form>
 </div>
-<!-- Decorative element -->
+
 <div class="absolute -bottom-4 -right-4 w-24 h-24 opacity-20">
 <i class="fa-solid fa-leaf text-secondary text-7xl"></i>
 </div>
 </div>
 </div>
 </div>
-<!-- END: Main Content Area -->
-<!-- BEGIN: Video Section -->
-<section class="container mx-auto px-4 lg:px-8 py-8 border-t border-outline-variant mt-8">
-<div class="flex justify-between items-end border-b border-outline-variant pb-2 mb-6">
-<h2 class="text-headline-md text-on-surface flex items-center gap-2">
-<i class="fa-regular fa-circle-play text-secondary text-lg"></i> Video hướng dẫn
-</h2>
-<a class="text-primary-container font-medium flex items-center gap-1 text-label-md" href="#">
-Xem tất cả video <i class="fa-solid fa-arrow-right"></i>
-</a>
-</div>
-<div class="grid md:grid-cols-3 gap-6">
-<!-- Video 1 -->
-<div class="group cursor-pointer">
-<div class="relative rounded-xl overflow-hidden mb-3 aspect-video">
-<img alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLs3jJ_BFPCqPKaYBr_0CvneF4cIqs7mZ2Aa6GRiA5BD0TSaQbIKMYyX3ExScY1HBXTNZjYI0lmodgqPscMSOje3qoZUcdmFBSD4qJQykQcXJkv8rzr5rwsjFJ0ZdV3EyCox5rXgjTjksMEdm9XJM9mYlREJAK2F7wZsxklohEVklCu6foEoyURuXVVTxRg73ai5wDs6cYIsRF5OIRIpnPe6XOw3lMKYXM4YuIHpqDp_jrEtjjrHBB4q6mo">
-<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-<div class="w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-white bg-black/30 backdrop-blur-sm group-hover:scale-110 transition-transform">
-<i class="fa-solid fa-play ml-1"></i>
-</div>
-</div>
-<div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">08:45</div>
-</div>
-<h3 class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-2">Cách kho thịt ngon mềm không bị khô</h3>
-<p class="text-label-md text-on-surface-variant mt-1">12K lượt xem</p>
-</div>
-<!-- Video 2 -->
-<div class="group cursor-pointer">
-<div class="relative rounded-xl overflow-hidden mb-3 aspect-video">
-<img alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLsj31-dExYUG7oygYRzEPFq0VqGtc9Tuz-9euSd4Epb0z4NVMPUO3Y_6ikjDEwYCq4A2qcZAxHmiB9GkGOSaDezjmbV70jYeN6_n7zu5YaPRgPo48p95asMBEmnzBAmAMMPTjuGFIZlkJQORnkQeiOqL-k1xEkyOGcAr6ayunB7aXmGIrm_SQqr5Y7spX5U-tvlPE1eIFivKptSXysS6EkvhEtRuOypLk3cttfRidb0af3LxdPfnCgHjw">
-<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-<div class="w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-white bg-black/30 backdrop-blur-sm group-hover:scale-110 transition-transform">
-<i class="fa-solid fa-play ml-1"></i>
-</div>
-</div>
-<div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">06:30</div>
-</div>
-<h3 class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-2">Bí quyết nấu canh chua ngon đúng vị</h3>
-<p class="text-label-md text-on-surface-variant mt-1">9K lượt xem</p>
-</div>
-<!-- Video 3 -->
-<div class="group cursor-pointer">
-<div class="relative rounded-xl overflow-hidden mb-3 aspect-video">
-<img alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/AP1WRLsKicGaD8KHfnSDOAYFYZEuAf7YEVrZrT-mqm7BajMJ1mE5bEUTf8jlE5p8V11eUUPLgT-1SVHAMf2KN3EyRgRis9g0yRCNulseAV5vWaE9bTLvpUXRPzDO6MlumJ9MZlTGpeorgIn7LwlXf-4p6H3uC7-PHaZgA3jVoiZSIFHiGOcBh1RFEdHztichqg1tO4_e37HTycqMHixBwuG7jY238nBtmdYbSTXRlbqDIsmMrh53BA43GLGDkHU">
-<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-<div class="w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-white bg-black/30 backdrop-blur-sm group-hover:scale-110 transition-transform">
-<i class="fa-solid fa-play ml-1"></i>
-</div>
-</div>
-<div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">07:12</div>
-</div>
-<h3 class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-2">Làm bánh Tiramisu siêu đơn giản</h3>
-<p class="text-label-md text-on-surface-variant mt-1">15K lượt xem</p>
-</div>
-</div>
-</section>
-<!-- END: Video Section -->
-<!-- BEGIN: Bottom Content -->
+
 <section class="container mx-auto px-4 lg:px-8 py-8 grid lg:grid-cols-2 gap-8 border-t border-outline-variant mt-8">
-<!-- Bài viết mới -->
+
 <div>
 <div class="flex justify-between items-end border-b border-outline-variant pb-2 mb-6">
 <h2 class="text-headline-md text-on-surface flex items-center gap-2">
 <i class="fa-solid fa-book-open text-primary-container text-lg"></i> Bài viết mới
       </h2>
-<a class="text-primary-container font-medium flex items-center gap-1 text-label-md" href="#">
+<a class="text-primary-container font-medium flex items-center gap-1 text-label-md" asp-controller="Blogs" asp-action="Index">
         Xem tất cả <i class="fa-solid fa-arrow-right"></i>
 </a>
 </div>
 <div class="space-y-6">
-<article class="flex gap-4 group">
-<div class="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
-<img alt="Article image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi3IUMm_oezAeq70vpahFprcDuDuXj5knvPtlWND4LI4hehNNY8kZnsVZmhqggyNMxp_h0MIse8pAc_WKMzTprTXKr1Mxea04sJXkBArq32Ikmpio9djZQ-iCKcKB4hN1TW8fW5_6IRuELLd8p9kmzMAROkSisVYOdrb51Lyi-JRveKM8RCAOYp-1aGyM4rnv7cqK2AY7tFO6c1295rn39o33J9djcyuYl-Nx9EE3LiVoMzDkQuLweUYV-g6SfAk276R00iVMwnjY">
-</div>
-<div class="flex flex-col justify-between">
-<h3 class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-2">10 mẹo nấu ăn giúp món ăn ngon hơn mỗi ngày</h3>
-<p class="text-body-md text-on-surface-variant line-clamp-2">Những mẹo nhỏ nhưng cực kỳ hữu ích giúp bạn nấu ăn ngon hơn, tiết kiệm thời gian...</p>
-<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-2">
-<span class="text-secondary font-medium">Mẹo vặt nhà bếp</span>
-<span class="">•</span>
-<span class="">15/05/2024</span>
-<span class="">•</span>
-<span class=""><i class="fa-regular fa-eye"></i> 3.2K</span>
+@if (!Model.LatestBlogs.Any())
+{
+    <p class="text-sm text-on-surface-variant text-center py-6">Chưa có bài viết nào.</p>
+}
+else
+{
+    @foreach (var blog in Model.LatestBlogs)
+    {
+        <partial name="_LatestBlogItem" model="blog" />
+    }
+}
 </div>
 </div>
-</article>
-<article class="flex gap-4 group">
-<div class="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
-<img alt="Article image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvq-fgjgMU7JNPmfZ2u-PPjdcG3AthDdtIGAic2Hpjne6fK8W9xlZH8P0824Q8725IFBpaKPH6QQVFk5c4ve9k1CKjTfe-vSU12C3zQWa4qtOUjXUmsgnmOW3lOfPmrR_ub0FhDs2JvjRarz3Hag_OIL4xfQ1-xP9afbISfDrwp5hewQDsBamzuZGnv4q75If6SQx7n9yoHUpEbJs4juhKrqGkhWt2mlP8I5alfJHyfJyS-h4zYt4jMW216hD3bZ1uGjdBzOIm5WQ">
-</div>
-<div class="flex flex-col justify-between">
-<h3 class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-2">Nguyên liệu mùa hè tốt cho sức khỏe</h3>
-<p class="text-body-md text-on-surface-variant line-clamp-2">Gợi ý những nguyên liệu mùa hè tươi ngon, dễ tìm và tốt cho sức khỏe cả gia đình.</p>
-<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-2">
-<span class="text-secondary font-medium">Dinh dưỡng</span>
-<span class="">•</span>
-<span class="">12/05/2024</span>
-<span class="">•</span>
-<span class=""><i class="fa-regular fa-eye"></i> 2.1K</span>
-</div>
-</div>
-</article>
-<article class="flex gap-4 group">
-<div class="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
-<img alt="Article image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGRjp8nU4XC6a5-3kuTKIxOASWCpd6XT9L0NVt-PRnSW6F2qt2WP1sStr5-aLiTIumIjotFVwAbhpdt-WIjUlKKQG79lGrvyW-yhRTPV0WXuuvG_rKp7ycZGJqfD0akTPFdy6Qt6p-2HNSmvtVpYJb23KR4KwE_8Ppc-K7SrWQKEHB4b8-Ns3VNOunTlPlckRSaFkuMMEz44eOcTJryA6oXn6cFhPWIZAX7y9RBXkuLhifqP0ii_9snpkQcefYbtG32geoM1P9BcM">
-</div>
-<div class="flex flex-col justify-between">
-<h3 class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-2">Du lịch ẩm thực: 5 món ngon phải thử ở Hội An</h3>
-<p class="text-body-md text-on-surface-variant line-clamp-2">Khám phá 5 món đặc sản Hội An nổi tiếng mà bạn nhất định phải thử khi ghé thăm phố cổ.</p>
-<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-2">
-<span class="text-secondary font-medium">Ẩm thực</span>
-<span class="">•</span>
-<span class="">10/05/2024</span>
-<span class="">•</span>
-<span class=""><i class="fa-regular fa-eye"></i> 4.5K</span>
-</div>
-</div>
-</article>
-</div>
-</div>
-<!-- Bí quyết nấu ăn ngon -->
+
 <div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant shadow-sm relative overflow-hidden">
 <div class="flex justify-between items-end border-b border-outline-variant pb-2 mb-6 relative z-10">
 <h2 class="text-headline-md text-on-surface flex items-center gap-2">
@@ -440,10 +219,10 @@ Xem tất cả video <i class="fa-solid fa-arrow-right"></i>
 </div>
 </div>
 </div>
-<!-- Large decorative image -->
+
 <div class="absolute right-0 top-0 h-full w-1/3 md:w-1/2 opacity-30 md:opacity-100">
-<img alt="Món ăn gia đình Việt Nam" class="h-full w-full object-cover object-left mask-image-linear" src="https://lh3.googleusercontent.com/aida/AP1WRLva-UUaOSpuhbMRrSbU-V5Msrn2bt_Pz2r-ShetjKIb6BmR5Ynf3BH-9lsY7cJKPdLW_S2Fq9f06D_qMMpo6G3pbzymwBVCa-cL_nVOvmW1-R49eubU369HB5ApVkWbdG635oSVQcqBCk1d0wdqEPVa2I6AlcyEuAm7gYFr7o5degpf5KoHyo1fdjIz5wSqaCtQOQ7pY1UWmiCApl_C5w0w74XaHj4kQqPm44jy6-B076KqkAEeaA0DAQ">
+<img alt="Món ăn gia đình Việt Nam" class="h-full w-full object-cover object-left mask-image-linear" src="~/images/food.png" asp-append-version="true">
 </div>
 </div>
 </section>
-<!-- END: Bottom Content -->
+

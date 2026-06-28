@@ -5,7 +5,6 @@ using RecipeWebsite.Web.Configuration;
 using RecipeWebsite.Web.Constants;
 using RecipeWebsite.Web.Data;
 
-// Load .env from repo root or project directory
 var rootEnvPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
 if (File.Exists(rootEnvPath))
     Env.Load(rootEnvPath);

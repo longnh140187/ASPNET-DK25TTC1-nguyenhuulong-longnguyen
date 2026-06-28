@@ -52,7 +52,10 @@
                         var (statusLabel, statusClass) = GetStatusBadge(item.Status);
                         <tr>
                             <td>
-                                <span class="font-medium text-on-surface">@item.Title</span>
+                                <div class="admin-table-name-cell">
+                                    <partial name="_AdminListThumbnail" model="item.ThumbnailUrl" />
+                                    <span class="font-medium text-on-surface">@item.Title</span>
+                                </div>
                             </td>
                             <td class="text-center">
                                 @if (item.IsFeatured)

@@ -1,9 +1,12 @@
+@model RecipeIndexViewModel
+@using RecipeWebsite.Web.Models
 @{
-ViewData["Title"] = "Công thức";
+    ViewData["Title"] = "Công thức";
+    var recipesBaseUrl = Url.Action("Index", "Recipes") ?? "/recipes";
 }
 
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-lg md:py-section-gap">
-    <!-- Breadcrumbs & Header -->
+    
     <div class="mb-stack-lg">
         <nav aria-label="Breadcrumb" class="flex text-on-surface-variant text-xs mb-stack-sm">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -22,12 +25,30 @@ ViewData["Title"] = "Công thức";
                 </li>
             </ol>
         </nav>
-        <h1 class="font-headline-md text-headline-md text-on-surface">Tất cả Công thức</h1>
-        <p class="text-body-md text-on-surface-variant mt-2 max-w-2xl">Khám phá hàng ngàn công thức nấu ăn
-            ngon miệng, từ bữa cơm gia đình giản dị đến những món tiệc sang trọng.</p>
+        @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+        {
+            <h1 class="font-headline-md text-headline-md text-on-surface">Kết quả tìm kiếm</h1>
+            <p class="text-body-md text-on-surface-variant mt-2 max-w-2xl">
+                Tìm thấy <strong class="text-on-surface">@Model.TotalItems</strong> công thức cho
+                &ldquo;<span class="text-primary-container">@Model.SearchQuery</span>&rdquo;
+            </p>
+        }
+        else
+        {
+            <h1 class="font-headline-md text-headline-md text-on-surface">Tất cả Công thức</h1>
+            <p class="text-body-md text-on-surface-variant mt-2 max-w-2xl">Khám phá hàng ngàn công thức nấu ăn
+                ngon miệng, từ bữa cơm gia đình giản dị đến những món tiệc sang trọng.</p>
+        }
     </div>
-    <div class="flex flex-col lg:flex-row gap-stack-lg items-start">
-        <!-- Sidebar Filters -->
+
+    <form method="get" asp-controller="Recipes" asp-action="Index" id="recipeFilterForm"
+          class="flex flex-col lg:flex-row gap-stack-lg items-start">
+        <input type="hidden" name="page" id="pageInput" value="@Model.CurrentPage"/>
+        @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+        {
+            <input type="hidden" name="q" value="@Model.SearchQuery"/>
+        }
+
         <aside
             class="w-full lg:w-64 flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md sticky top-24 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
             <div
@@ -36,297 +57,275 @@ ViewData["Title"] = "Công thức";
                     <span class="material-symbols-outlined text-[18px]">filter_list</span>
                     Bộ lọc
                 </h2>
-                <button class="text-primary-container text-label-md">Xóa tất cả</button>
+                @if (Model.HasActiveFilters)
+                {
+                    <a asp-controller="Recipes" asp-action="Index"
+                       class="text-primary-container text-label-md hover:underline">Xóa tất cả</a>
+                }
+                else
+                {
+                    <span class="text-on-surface-variant text-label-md opacity-50 cursor-not-allowed">Xóa tất cả</span>
+                }
             </div>
-            <!-- Categories -->
+            
             <div class="mb-stack-lg">
                 <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-stack-sm">
                     Danh mục</h3>
                 <div class="space-y-2">
-                    <label class="flex items-center gap-2 cursor-pointer group">
-                        <input checked=""
-                               class="rounded border-outline text-primary-container focus:ring-primary-container"
-                               type="checkbox"/>
-                        <span
-                            class="text-label-md group-hover:text-primary-container transition-colors">Món chính</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer group">
-                        <input class="rounded border-outline text-primary-container focus:ring-primary-container"
-                               type="checkbox"/>
-                        <span
-                            class="text-label-md group-hover:text-primary-container transition-colors">Ăn chay</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer group">
-                        <input class="rounded border-outline text-primary-container focus:ring-primary-container"
-                               type="checkbox"/>
-                        <span
-                            class="text-label-md group-hover:text-primary-container transition-colors">Tráng miệng</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer group">
-                        <input class="rounded border-outline text-primary-container focus:ring-primary-container"
-                               type="checkbox"/>
-                        <span
-                            class="text-label-md group-hover:text-primary-container transition-colors">Đồ uống</span>
-                    </label>
+                    @if (!Model.Categories.Any())
+                    {
+                        <p class="text-label-md text-on-surface-variant">Chưa có danh mục.</p>
+                    }
+                    else
+                    {
+                        @foreach (var category in Model.Categories)
+                        {
+                            var isChecked = Model.SelectedCategoryIds.Contains(category.Id);
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input class="filter-input rounded border-outline text-primary-container focus:ring-primary-container"
+                                       type="checkbox" name="categoryIds" value="@category.Id"
+                                       checked="@isChecked"/>
+                                <span class="text-label-md group-hover:text-primary-container transition-colors">@category.Name</span>
+                            </label>
+                        }
+                    }
                 </div>
             </div>
-            <!-- Difficulty -->
+            
             <div class="mb-stack-lg">
                 <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-stack-sm">Độ
                     khó</h3>
                 <div class="flex flex-wrap gap-2">
-                    <button
-                        class="px-2.5 py-0.5 rounded-full border border-primary-container text-primary-container bg-primary-fixed/20 text-label-md hover:bg-primary-container hover:text-white transition-colors">
-                        Dễ
-                    </button>
-                    <button
-                        class="px-2.5 py-0.5 rounded-full border border-outline text-on-surface-variant bg-surface text-label-md hover:border-primary-container hover:text-primary-container transition-colors">
-                        Trung bình
-                    </button>
-                    <button
-                        class="px-2.5 py-0.5 rounded-full border border-outline text-on-surface-variant bg-surface text-label-md hover:border-primary-container hover:text-primary-container transition-colors">
-                        Khó
-                    </button>
+                    @{
+                        var difficultyOptions = new[]
+                        {
+                            (Value: nameof(RecipeDifficulty.EASY), Label: "Dễ"),
+                            (Value: nameof(RecipeDifficulty.MEDIUM), Label: "Trung bình"),
+                            (Value: nameof(RecipeDifficulty.HARD), Label: "Khó")
+                        };
+                    }
+                    @foreach (var option in difficultyOptions)
+                    {
+                        var isSelected = Model.SelectedDifficulties.Contains(option.Value);
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="difficulties" value="@option.Value"
+                                   class="filter-input peer sr-only" checked="@isSelected"/>
+                            <span class="inline-block px-2.5 py-0.5 rounded-full border text-label-md transition-colors
+                                peer-checked:border-primary-container peer-checked:text-primary-container peer-checked:bg-primary-fixed/20
+                                @(isSelected
+                                    ? "border-primary-container text-primary-container bg-primary-fixed/20"
+                                    : "border-outline text-on-surface-variant bg-surface hover:border-primary-container hover:text-primary-container")">
+                                @option.Label
+                            </span>
+                        </label>
+                    }
                 </div>
             </div>
-            <!-- Time -->
+            
             <div>
                 <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-stack-sm">
                     Thời gian nấu</h3>
-                <input
-                    class="w-full accent-primary-container h-1 bg-surface-container rounded-lg appearance-none cursor-pointer"
-                    max="120" min="10" type="range" value="60"/>
+                <input id="maxTimeRange"
+                       name="maxTime"
+                       class="filter-input w-full accent-primary-container h-1 bg-surface-container rounded-lg appearance-none cursor-pointer"
+                       max="@RecipeIndexViewModel.MaxCookingTimeLimit" min="10" type="range"
+                       value="@Model.MaxTime"/>
                 <div class="flex justify-between text-label-md text-on-surface-variant mt-1">
                     <span>10p</span>
-                    <span>&lt; 60p</span>
+                    <span id="maxTimeLabel">
+                        @if (Model.MaxTime >= RecipeIndexViewModel.MaxCookingTimeLimit)
+                        {
+                            @:≤ 120p+
+                        }
+                        else
+                        {
+                            @:<span>≤ @Model.MaxTime p</span>
+                        }
+                    </span>
                     <span>120p+</span>
                 </div>
             </div>
         </aside>
-        <!-- Main Content Area -->
+
         <div class="flex-1 min-w-0">
-            <!-- Sort Bar -->
+            
             <div
-                class="flex flex-col sm:flex-row justify-end items-center gap-stack-md mb-stack-lg bg-surface-container-lowest p-2 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-outline-variant">
+                class="flex flex-col sm:flex-row justify-between items-center gap-stack-md mb-stack-lg bg-surface-container-lowest p-2 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-outline-variant">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Hiển thị:</span>
+                    <select id="pageSizeSelect" name="pageSize"
+                            class="filter-input bg-surface-container border-none rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-primary-container text-sm cursor-pointer w-full sm:w-auto">
+                        @foreach (var size in RecipeIndexViewModel.AllowedPageSizes)
+                        {
+                            if (Model.PageSize == size)
+                            {
+                                <option value="@size" selected>@size / trang</option>
+                            }
+                            else
+                            {
+                                <option value="@size">@size / trang</option>
+                            }
+                        }
+                    </select>
+                </div>
                 <div class="flex items-center gap-2 w-full sm:w-auto">
                     <span
                         class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Sắp xếp theo:</span>
-                    <select
-                        class="bg-surface-container border-none rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-primary-container text-sm cursor-pointer w-full sm:w-auto">
-                        <option>Mới nhất</option>
-                        <option>Phổ biến</option>
-                        <option>Nhanh nhất</option>
+                    <select id="sortBySelect" name="sortBy"
+                            class="filter-input bg-surface-container border-none rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-primary-container text-sm cursor-pointer w-full sm:w-auto">
+                        @foreach (var option in new[] { RecipeSortBy.Newest, RecipeSortBy.Popular, RecipeSortBy.Fastest })
+                        {
+                            var label = option switch
+                            {
+                                RecipeSortBy.Popular => "Phổ biến",
+                                RecipeSortBy.Fastest => "Nhanh nhất",
+                                _ => "Mới nhất"
+                            };
+                            if (Model.SortBy == option)
+                            {
+                                <option value="@option" selected>@label</option>
+                            }
+                            else
+                            {
+                                <option value="@option">@label</option>
+                            }
+                        }
                     </select>
                 </div>
             </div>
-            <!-- Recipe Grid -->
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md">
-                <!-- Recipe Card 1 -->
-                <article
-                    class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 group flex flex-col h-full border border-outline-variant">
-                    <div class="relative h-48 overflow-hidden">
-                        <img alt="Thịt Kho Tàu"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             src="https://lh3.googleusercontent.com/aida/AP1WRLs3jJ_BFPCqPKaYBr_0CvneF4cIqs7mZ2Aa6GRiA5BD0TSaQbIKMYyX3ExScY1HBXTNZjYI0lmodgqPscMSOje3qoZUcdmFBSD4qJQykQcXJkv8rzr5rwsjFJ0ZdV3EyCox5rXgjTjksMEdm9XJM9mYlREJAK2F7wZsxklohEVklCu6foEoyURuXVVTxRg73ai5wDs6cYIsRF5OIRIpnPe6XOw3lMKYXM4YuIHpqDp_jrEtjjrHBB4q6mo"/>
-                        <div
-                            class="absolute top-3 left-3 bg-primary-container text-white px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-bold">
-                            Món Chính
-                        </div>
-                        <button
-                            class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:bg-white transition-colors">
-                            <span class="material-symbols-outlined text-[16px]">favorite</span>
-                        </button>
+                @if (!Model.Recipes.Any())
+                {
+                    <div class="md:col-span-3 text-center py-16 text-on-surface-variant">
+                        @if (Model.HasActiveFilters)
+                        {
+                            @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+                            {
+                                <p class="mb-2">Không tìm thấy công thức nào khớp với &ldquo;@Model.SearchQuery&rdquo;.</p>
+                            }
+                            else
+                            {
+                                <p class="mb-2">Không tìm thấy công thức phù hợp với bộ lọc.</p>
+                            }
+                            <a asp-controller="Recipes" asp-action="Index"
+                               class="text-primary-container hover:underline text-sm">Xóa bộ lọc</a>
+                        }
+                        else
+                        {
+                            <p>Chưa có công thức nào.</p>
+                        }
                     </div>
-                    <div class="p-3 flex flex-col flex-1">
-                        <a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-semibold text-label-md text-on-surface mb-2 line-clamp-2 group-hover:text-primary-container transition-colors block">
-                            Thịt Kho Tàu Truyền Thống</a>
-                        <p class="text-on-surface-variant text-[11px] line-clamp-2 mb-2">Thịt kho tàu mềm đậm vị, rất hợp cho bữa cơm gia đình.</p>
-                        <div
-                            class="mt-auto pt-stack-sm flex items-center justify-start border-t border-outline-variant">
-                            <div class="flex items-center gap-3 text-on-surface-variant text-[11px]">
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">schedule</span> 60p</span>
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">local_fire_department</span> Trung bình</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!-- Recipe Card 2 -->
-                <article
-                    class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 group flex flex-col h-full border border-outline-variant">
-                    <div class="relative h-48 overflow-hidden">
-                        <img alt="Bữa cơm gia đình"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             src="https://lh3.googleusercontent.com/aida/AP1WRLtS1VxaHl2lhi1sFMbZMd6pYjUG317FwRnMoak6SORk63EIJOWo9Jm1SgsJc74UA7MLk8gWigzQ8y015fSqKT80MDa_QUtKeflUplGACiTVUdXWNQrXxHUHfOYJTlDPf9GL3Aebg6IJAdvClRtmLawhtBkWptxBOe8H2DfHjv23-UYkyx_YniNDJZYpYI9FHR-ZY8jmUHIEpj4INMx4DRgOkgEuyvqu5gfODKNYeUABIDEH5AOaIZi50Zo"/>
-                        <div
-                            class="absolute top-3 left-3 bg-secondary text-white px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-bold">
-                            Thực đơn
-                        </div>
-                        <button
-                            class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:bg-white transition-colors">
-                            <span class="material-symbols-outlined text-[16px]">favorite</span>
-                        </button>
-                    </div>
-                    <div class="p-3 flex flex-col flex-1">
-                        <a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-semibold text-label-md text-on-surface mb-2 line-clamp-2 group-hover:text-primary-container transition-colors block">
-                            Mâm Cơm Quê Hương Thanh Đạm</a>
-                        <p class="text-on-surface-variant text-[11px] line-clamp-2 mb-2">Mâm cơm quê hương thanh đạm, đủ chất và dễ chuẩn bị.</p>
-                        <div
-                            class="mt-auto pt-stack-sm flex items-center justify-start border-t border-outline-variant">
-                            <div class="flex items-center gap-3 text-on-surface-variant text-[11px]">
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">schedule</span> 45p</span>
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">local_fire_department</span> Dễ</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!-- Recipe Card 3 -->
-                <article
-                    class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 group flex flex-col h-full border border-outline-variant">
-                    <div class="relative h-48 overflow-hidden">
-                        <img alt="Đặc sản ba miền"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             src="https://lh3.googleusercontent.com/aida/AP1WRLvb4NUThX_UaOR3BuS51e1QmcdClsYoVOU-_JGaa9jQp3tkDKHEoiMcPeEjWscDd9pgw9HborwtQLUzKN-A0uKZntWptQPl9PzehmAVnwp3Ew45aT03elL5R2pvC1FdFqiZfAyQEaKIfCgIRC2xBZ-y_eQ2nYIWQxTnqLJW6rKmCRRuQ37WMgLvLgusLfZbOZyrblXcXTnn3mtN5mOgfvn48EqNac3Cpj4W5R52pOSX27D7kLXLBgSd7Kc"/>
-                        <div
-                            class="absolute top-3 left-3 bg-error text-white px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-bold">
-                            Đặc sản
-                        </div>
-                        <button
-                            class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:bg-white transition-colors">
-                            <span class="material-symbols-outlined text-[16px]">favorite</span>
-                        </button>
-                    </div>
-                    <div class="p-3 flex flex-col flex-1">
-                        <a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-semibold text-label-md text-on-surface mb-2 line-clamp-2 group-hover:text-primary-container transition-colors block">
-                            Cuốn Tôm Thịt Thanh Mát Ngày Hè</a>
-                        <p class="text-on-surface-variant text-[11px] line-clamp-2 mb-2">Cuốn tôm thịt thanh mát, nhẹ bụng và rất hợp ngày hè.</p>
-                        <div
-                            class="mt-auto pt-stack-sm flex items-center justify-start border-t border-outline-variant">
-                            <div class="flex items-center gap-3 text-on-surface-variant text-[11px]">
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">schedule</span> 30p</span>
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">local_fire_department</span> Dễ</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!-- Recipe Card 4 Placeholder -->
-                <article
-                    class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 group flex flex-col h-full border border-outline-variant">
-                    <div class="relative h-48 overflow-hidden bg-surface-container">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             data-alt="A close up shot of a steaming bowl of Vietnamese Pho noodle soup with sliced beef, fresh herbs, and a rich dark broth. High quality professional food photography, natural lighting, moody background."
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT2dQ-fhZZR_yNc8ZeQG33IdTBU4wtyBKcw-n4PKOtWR8Wg-ao5l9f6DQUVI8--HtJjj2-MPkLs0RQqRT3t6xKr_0E-sI8vL9dsjXA-MUyVRgHzkxIzMMXLTCta_vPM85DXCzH4FjzSACXLHEQ7qIsTPargCelmzgMbfAvuVCAnW70CsLBJX90cs6jcJVeXAOR24eLgfMQVn2zjEsgfAW6mcVzcfyi14o_d9j0ZV3gLQJmBzJ3qsvxzBd8x3KOxuB6sDnyaXlQhGM"/>
-                        <div
-                            class="absolute top-3 left-3 bg-primary-container text-white px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-bold">
-                            Món Chính
-                        </div>
-                    </div>
-                    <div class="p-3 flex flex-col flex-1">
-                        <a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-semibold text-label-md text-on-surface mb-2 line-clamp-2 group-hover:text-primary-container transition-colors block">
-                            Phở Bò Gia Truyền Đậm Đà</a>
-                        <p class="text-on-surface-variant text-[11px] line-clamp-2 mb-2">Phở bò truyền thống nước dùng đậm đà, thơm mùi quế hồi.</p>
-                        <div
-                            class="mt-auto pt-stack-sm flex items-center justify-start border-t border-outline-variant">
-                            <div class="flex items-center gap-3 text-on-surface-variant text-[11px]">
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">schedule</span> 120p</span>
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">local_fire_department</span> Khó</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!-- Recipe Card 5 Placeholder -->
-                <article
-                    class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 group flex flex-col h-full border border-outline-variant">
-                    <div class="relative h-48 overflow-hidden bg-surface-container">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             data-alt="A refreshing glass of Vietnamese iced coffee with condensed milk (Ca phe sua da) on a rustic wooden table. Warm sunlight, condensation on the glass, inviting and energetic food photography."
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAKcOjJFw2S0jvqG_qbYC924mCPFr-Q-R3LnvxwPYpzp0Us8LxYLy33vfdr1LqoC9fwWbRg2K9gRn9gyut5sFn3F-vWQ9A1Xv6ae200IpJEybqLd4ol1ps2jprIxOMtHrrpQKfV1NgPsQ2aO3yAana-j-jPFmd0uWH5euuQgaHxYLarnDyRBS_KoN3C_6wMfOjNE3unEsqvek36yGuOh4FW0OoqFuUclYtVv0_rovFvJlKLxHFrBISyXZgbcgMFPVDqAAi6CDc6hM"/>
-                        <div
-                            class="absolute top-3 left-3 bg-tertiary text-white px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-bold">
-                            Đồ Uống
-                        </div>
-                    </div>
-                    <div class="p-3 flex flex-col flex-1">
-                        <a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-semibold text-label-md text-on-surface mb-2 line-clamp-2 group-hover:text-primary-container transition-colors block">
-                            Cà Phê Sữa Đá Chuẩn Vị Sài Gòn</a>
-                        <p class="text-on-surface-variant text-[11px] line-clamp-2 mb-2">Cà phê sữa đá mát lạnh, đậm vị cà phê Việt Nam.</p>
-                        <div
-                            class="mt-auto pt-stack-sm flex items-center justify-start border-t border-outline-variant">
-                            <div class="flex items-center gap-3 text-on-surface-variant text-[11px]">
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">schedule</span> 10p</span>
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">local_fire_department</span> Dễ</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <!-- Recipe Card 6 Placeholder -->
-                <article
-                    class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 group flex flex-col h-full border border-outline-variant">
-                    <div class="relative h-48 overflow-hidden bg-surface-container">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             data-alt="A beautiful bowl of Vietnamese sweet soup dessert (Che) with colorful jellies, coconut milk, and shaved ice. Bright, playful, and appetizing food photography style."
-                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5vrfVm0IG-Z5pD_v15gavGITE5O44agx1H5WXEFXb4AXNEKOxVavGNHi3mKEYaMdx5th8O7oPUm8Q2wr6__a0RVDKKHpLkPq8FGMc_r0Ne5bTpxm7At29QWKWwq1mE7yjMYL0W0rABYFf_1DcIcs06UMlNXvMHK_ST4cKF1KOxMR35ifBADJzOQZX2KWpsWTjfppBNrpUM7QlVTPYtn4FN44u_0uGnvzOHeQzoc0Cv4l4NwI8SCfgB3a6En2-L5GgmQGwOJ72TWU"/>
-                        <div
-                            class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-bold">
-                            Tráng miệng
-                        </div>
-                    </div>
-                    <div class="p-3 flex flex-col flex-1">
-                        <a asp-controller="Recipes" asp-action="Detail" asp-route-slug="thit-kho-tau-dam-da" class="font-semibold text-label-md text-on-surface mb-2 line-clamp-2 group-hover:text-primary-container transition-colors block">
-                            Chè Thập Cẩm Giải Nhiệt Mùa Hè</a>
-                        <p class="text-on-surface-variant text-[11px] line-clamp-2 mb-2">Chè thập cẩm ngọt thanh, giải nhiệt cho ngày hè nóng.</p>
-                        <div
-                            class="mt-auto pt-stack-sm flex items-center justify-start border-t border-outline-variant">
-                            <div class="flex items-center gap-3 text-on-surface-variant text-[11px]">
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">schedule</span> 45p</span>
-                                <span class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[12px]">local_fire_department</span> Trung bình</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                }
+                else
+                {
+                    @foreach (var recipe in Model.Recipes)
+                    {
+                        <partial name="_RecipeListCard" model="recipe"/>
+                    }
+                }
             </div>
-            <!-- Pagination -->
-            <div class="mt-stack-lg flex justify-center">
-                <nav aria-label="Pagination" class="flex items-center gap-1">
-                    <button
-                        class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled="">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </button>
-                    <button
-                        class="w-9 h-9 flex items-center justify-center rounded-full bg-primary-container text-white text-sm font-bold">
-                        1
-                    </button>
-                    <button
-                        class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
-                        2
-                    </button>
-                    <button
-                        class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
-                        3
-                    </button>
-                    <span class="px-2 text-on-surface-variant text-sm">...</span>
-                    <button
-                        class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
-                        12
-                    </button>
-                    <button
-                        class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
-                </nav>
-            </div>
+
+            @if (Model.TotalItems > 0)
+            {
+                <div class="mt-stack-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-sm text-on-surface-variant">
+                        Trang @Model.CurrentPage / @Model.TotalPages
+                        <span class="hidden sm:inline">— @Model.TotalItems công thức</span>
+                    </p>
+                    @if (Model.TotalPages > 1)
+                    {
+                        <nav aria-label="Pagination" class="flex items-center gap-1">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <a href="@(recipesBaseUrl + Model.BuildQueryString(Model.CurrentPage - 1))"
+                                   class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors"
+                                   title="Trang trước">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <span
+                                    class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant opacity-50 cursor-not-allowed">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </span>
+                            }
+
+                            @for (var p = 1; p <= Model.TotalPages; p++)
+                            {
+                                if (p == Model.CurrentPage)
+                                {
+                                    <span
+                                        class="w-9 h-9 flex items-center justify-center rounded-full bg-primary-container text-white text-sm font-bold">@p</span>
+                                }
+                                else
+                                {
+                                    <a href="@(recipesBaseUrl + Model.BuildQueryString(p))"
+                                       class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface hover:bg-surface-container hover:text-primary-container transition-colors text-sm">
+                                        @p
+                                    </a>
+                                }
+                            }
+
+                            @if (Model.HasNextPage)
+                            {
+                                <a href="@(recipesBaseUrl + Model.BuildQueryString(Model.CurrentPage + 1))"
+                                   class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary-container transition-colors"
+                                   title="Trang sau">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <span
+                                    class="w-9 h-9 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant opacity-50 cursor-not-allowed">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </span>
+                            }
+                        </nav>
+                    }
+                </div>
+            }
         </div>
-    </div>
+    </form>
 </div>
+
+@section Scripts {
+    <script>
+        (function () {
+            var form = document.getElementById('recipeFilterForm');
+            var pageInput = document.getElementById('pageInput');
+            var maxTimeRange = document.getElementById('maxTimeRange');
+            var maxTimeLabel = document.getElementById('maxTimeLabel');
+            var maxLimit = @RecipeIndexViewModel.MaxCookingTimeLimit;
+            var rangeTimer;
+
+            function updateMaxTimeLabel(value) {
+                if (!maxTimeLabel) return;
+                maxTimeLabel.textContent = Number(value) >= maxLimit ? '≤ 120p+' : '≤ ' + value + ' p';
+            }
+
+            function submitFromPageOne() {
+                if (pageInput) pageInput.value = '1';
+                form?.submit();
+            }
+
+            document.querySelectorAll('.filter-input').forEach(function (el) {
+                if (el === maxTimeRange) return;
+
+                el.addEventListener('change', function () {
+                    submitFromPageOne();
+                });
+            });
+
+            maxTimeRange?.addEventListener('input', function () {
+                updateMaxTimeLabel(this.value);
+                clearTimeout(rangeTimer);
+                rangeTimer = setTimeout(submitFromPageOne, 400);
+            });
+
+            updateMaxTimeLabel(maxTimeRange?.value ?? maxLimit);
+        })();
+    </script>
+}

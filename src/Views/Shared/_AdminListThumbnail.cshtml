@@ -1,0 +1,11 @@
+@model string?
+@if (!string.IsNullOrEmpty(Model))
+{
+    <img src="@Model" alt="" class="admin-list-thumb" loading="lazy" />
+}
+else
+{
+    <div class="admin-list-thumb admin-list-thumb--placeholder" title="Chưa có ảnh">
+        <span class="material-symbols-outlined text-[20px]">image</span>
+    </div>
+}

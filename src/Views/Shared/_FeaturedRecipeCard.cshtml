@@ -1,0 +1,42 @@
+@model Recipe
+@{
+    var categoryName = Model.Category?.Name ?? "Món ăn";
+    var categoryColor = string.IsNullOrWhiteSpace(Model.Category?.Color) ? "#ff6b00" : Model.Category!.Color!;
+    var hasThumbnail = !string.IsNullOrWhiteSpace(Model.ThumbnailUrl);
+}
+
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow group border border-outline-variant">
+    <div class="relative h-48">
+        @if (hasThumbnail)
+        {
+            <img alt="@Model.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="@Model.ThumbnailUrl" loading="lazy">
+        }
+        else
+        {
+            <div class="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                <i class="fa-regular fa-image text-4xl"></i>
+            </div>
+        }
+        <span class="absolute top-3 left-3 text-white text-xs font-semibold px-2 py-1 rounded" style="background-color: @categoryColor">
+            @categoryName
+        </span>
+        @if (Model.CookingTimeMinutes is > 0)
+        {
+            <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
+                <i class="fa-regular fa-clock"></i> @Model.CookingTimeMinutes phút
+            </div>
+        }
+    </div>
+    <div class="p-4 space-y-2">
+        <h3>
+            <a asp-controller="Recipes" asp-action="Detail" asp-route-slug="@Model.Slug"
+               class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-1">
+                @Model.Title
+            </a>
+        </h3>
+        @if (!string.IsNullOrWhiteSpace(Model.Summary))
+        {
+            <p class="text-on-surface-variant text-body-md line-clamp-2">@Model.Summary</p>
+        }
+    </div>
+</div>

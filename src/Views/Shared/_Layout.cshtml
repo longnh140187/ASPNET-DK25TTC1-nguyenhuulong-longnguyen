@@ -22,45 +22,51 @@
         var recipesNavClass = currentController == "Recipes"
                 ? "text-primary-container border-b-2 border-primary-container pb-1"
                 : "hover:text-primary-container transition-colors";
+        var blogsNavClass = currentController == "Blogs"
+                ? "text-primary-container border-b-2 border-primary-container pb-1"
+                : "hover:text-primary-container transition-colors";
 }
-<!-- BEGIN: Header -->
+
 <header class="sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant py-3 shadow-sm">
         <div class="container mx-auto px-4 lg:px-8 flex items-center justify-between">
-                <!-- Logo -->
+                
                 <a class="flex items-center gap-2" asp-controller="Home" asp-action="Index"><img
                                 alt="Nấu Ngon Mỗi Ngày Logo" class="h-10 w-auto object-cover"
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxL4aNBgSTPcDK98YWBgY6iwpwNFIS9QHv2Na6l9O5PzZs2YhRTa6QfS0PdvXMF0jML8_eZquZEDIFkv2T0SXkEzAIym7iKFjHs2rnKRvwdciPbhfrcELRh43msSy5kPrUip7OgisnrHZY320lSmOW8JIWq3euPZH7hRny7IEkVoiL0pNcSYXjdXqqiK7z0TAii93CFXd-ScJwalaI-v0WTplFBQFccRwAVzncmPErKKBnqucPVdeVf2-HN7URxpbtOwcaJZrhhbg"></a>
-                <!-- Navigation -->
+                
                 <nav class="hidden lg:flex items-center gap-6 font-medium text-on-surface-variant">
                         <a class="@homeNavClass" asp-controller="Home"
                            asp-action="Index">Trang chủ</a>
                         <a class="@recipesNavClass" asp-controller="Recipes"
                            asp-action="Index">Công thức</a>
-                        <a class="hover:text-primary-container transition-colors" href="#">Món ngon</a>
-                        <a class="hover:text-primary-container transition-colors" href="#">Video</a>
-                        <a class="hover:text-primary-container transition-colors" href="#">Blog</a>
+                        <a class="hover:text-primary-container transition-colors" asp-controller="ComingSoon" asp-action="Index" asp-route-feature="Món ngon">Món ngon</a>
+                        <a class="@blogsNavClass" asp-controller="Blogs" asp-action="Index">Blog</a>
                 </nav>
-                <!-- Search & User -->
+                
                 <div class="flex items-center gap-4">
-                        <div class="hidden md:flex relative text-on-surface-variant focus-within:text-on-surface">
-                                <input class="pr-10 pl-4 py-2 bg-surface-container border border-outline-variant rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-primary-container focus:border-primary-container w-64 transition-all"
-                                       placeholder="Tìm kiếm công thức, món ăn..." type="text">
-                                <button class="absolute right-3 top-1/2 -translate-y-1/2">
+                        <form asp-controller="Recipes" asp-action="Index" method="get"
+                              class="hidden md:flex relative text-on-surface-variant focus-within:text-on-surface">
+                                <input name="q"
+                                       value="@Context.Request.Query["q"]"
+                                       class="pr-10 pl-4 py-2 bg-surface-container border border-outline-variant rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-primary-container focus:border-primary-container w-64 transition-all"
+                                       placeholder="Tìm kiếm công thức, món ăn..." type="search">
+                                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2"
+                                        aria-label="Tìm kiếm">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>
-                        </div>
+                        </form>
                 </div>
         </div>
 </header>
-<!-- END: Header -->
+
 <main>
         @RenderBody()
 </main>
-<!-- BEGIN: Footer -->
+
 <footer class="bg-surface-container-lowest border-t border-outline-variant pt-12 pb-6 mt-12">
         <div class="container mx-auto px-4 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                        <!-- Brand Column -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                        
                         <div class="space-y-6">
                                 <a class="flex items-center gap-2" asp-controller="Home" asp-action="Index"><img
                                                 alt="Nấu Ngon Mỗi Ngày Logo" class="h-10 w-auto object-cover"
@@ -69,78 +75,58 @@
                                         Cộng đồng chia sẻ công thức nấu ăn ngon, bí quyết nấu nướng và ẩm thực phong phú
                                         từ khắp nơi trên thế giới.
                                 </p>
-                                <div class="flex gap-3">
-                                        <a class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:opacity-80 transition-opacity"
-                                           href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                                        <a class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center hover:opacity-80 transition-opacity"
-                                           href="#"><i class="fa-brands fa-youtube"></i></a>
-                                        <a class="w-8 h-8 rounded-full bg-pink-600 text-white flex items-center justify-center hover:opacity-80 transition-opacity"
-                                           href="#"><i class="fa-brands fa-instagram"></i></a>
-                                        <a class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-80 transition-opacity"
-                                           href="#"><i class="fa-brands fa-tiktok"></i></a>
-                                </div>
                         </div>
-                        <!-- Navigation: Khám phá -->
+                        
                         <div>
                                 <h4 class="text-headline-sm text-on-surface mb-6">Khám phá</h4>
                                 <ul class="space-y-3 text-body-md text-on-surface-variant">
                                         <li class=""><a class="hover:text-primary-container transition-colors"
                                                            asp-controller="Recipes" asp-action="Index">Công
                                                         thức</a></li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Món
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="Recipes" asp-action="Index">Món
                                                         ngon</a></li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Ẩm
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="Recipes" asp-action="Index">Ẩm
                                                         thực</a></li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Video</a>
-                                        </li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Blog</a>
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="Blogs" asp-action="Index">Blog</a>
                                         </li>
                                 </ul>
                         </div>
-                        <!-- Navigation: Hỗ trợ -->
+                        
                         <div>
                                 <h4 class="text-headline-sm text-on-surface mb-6">Hỗ trợ</h4>
                                 <ul class="space-y-3 text-body-md text-on-surface-variant">
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Giới
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="ComingSoon" asp-action="Index" asp-route-feature="Giới thiệu">Giới
                                                         thiệu</a></li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Liên
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="ComingSoon" asp-action="Index" asp-route-feature="Liên hệ">Liên
                                                         hệ</a></li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Điều
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="ComingSoon" asp-action="Index" asp-route-feature="Điều khoản sử dụng">Điều
                                                         khoản sử dụng</a></li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Chính
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="ComingSoon" asp-action="Index" asp-route-feature="Chính sách bảo mật">Chính
                                                         sách bảo mật</a></li>
-                                        <li class=""><a class="hover:text-primary-container transition-colors" href="#">Câu
+                                        <li class=""><a class="hover:text-primary-container transition-colors"
+                                                           asp-controller="ComingSoon" asp-action="Index" asp-route-feature="Câu hỏi thường gặp">Câu
                                                         hỏi thường gặp</a></li>
                                 </ul>
                         </div>
-                        <!-- App Download -->
-                        <div class="space-y-6">
-                                <h4 class="text-headline-sm text-on-surface mb-6">Tải ứng dụng</h4>
-                                <p class="text-body-md text-on-surface-variant">
-                                        Tải ứng dụng Nấu Ngon để khám phá hàng ngàn công thức mọi lúc, mọi nơi!
-                                </p>
-                                <div class="flex flex-wrap gap-3 items-center">
-                                        <a class="inline-block" href="#">
-                                                <img alt="Get it on Google Play" class="h-10 w-auto"
-                                                     src="https://lh3.googleusercontent.com/aida/AP1WRLv2Dz3f4fpLtnKfXvsT3euc2ZfRjnixboa0qfYouzOWXR6ZFqIpHRfNqm1cP3GMSciWsLwwP_5-XxEmZms4yZ3M2H4vXPa-H9xmIgTS7is1NX3v_0Vaq2gPFMrKbN63TZp6ozBca-yb87R9jUiU54NHdqgqaW_MBpP7NGnGZUudsuzdu3C0OVYm3X1xyeazFcpoKYti1RX8Vz3zPFJeqExiiQNX5gYrluRlnRuJL6TBBS_V5g4JiJDJHA8">
-                                        </a>
-                                        <a class="inline-block" href="#">
-                                                <img alt="Download on the App Store" class="h-10 w-auto"
-                                                     src="https://lh3.googleusercontent.com/aida/AP1WRLtTd_uUveDNwmWngpYIR3xxWALaEkTCZ02sAWEm5nXJccsbyZB_LAZL5bb0P07GsidU-Z2yuEuDLMHkwHK-Xum9ev8tQOUy9MmWSsB1lb2BygxGOmBI9PvaZJgOvrmIuaySNA0uBqjbKQ0Lpo_EkH43p2ksBt9yoJrcBkf8g-MmOcF2iP5A56L36uFnRD0TQV-rzIXcKdZN6c-zyX51Hcx0MXswmRt10V-j6rLxtSlWf4DOyXxpugHily8">
-                                        </a>
-                                </div>
-                        </div>
                 </div>
-                <!-- Bottom Bar -->
+                
                 <div class="border-t border-outline-variant pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-label-md text-on-surface-variant">
                         <p class="">© 2024 Nấu Ngon Mỗi Ngày. Tất cả quyền được bảo lưu.</p>
-                        <button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-primary-container hover:text-white transition-all shadow-sm">
+                        <button type="button" id="scrollToTop" aria-label="Cuộn lên đầu trang"
+                                class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-primary-container hover:text-white transition-all shadow-sm">
                                 <i class="fa-solid fa-arrow-up"></i>
                         </button>
                 </div>
         </div>
 </footer>
-<!-- END: Footer -->
+
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>

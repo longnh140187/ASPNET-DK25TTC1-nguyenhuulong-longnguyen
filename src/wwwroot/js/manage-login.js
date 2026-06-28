@@ -1,4 +1,3 @@
-// Toggle password visibility on manage login page
 (function () {
   const toggleButton = document.getElementById("togglePassword");
   const passwordInput = document.getElementById("passwordInput");

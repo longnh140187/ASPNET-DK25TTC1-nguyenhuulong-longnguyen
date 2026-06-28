@@ -1,0 +1,154 @@
+@model BlogIndexViewModel
+@using RecipeWebsite.Web.ViewModels
+@{
+    ViewData["Title"] = "Blog";
+    var blogsBaseUrl = Url.Action("Index", "Blogs") ?? "/blogs";
+}
+
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter mb-section-gap">
+    
+    <section class="py-12 md:py-16 text-center">
+        <nav aria-label="Breadcrumb" class="flex justify-center text-on-surface-variant text-xs mb-stack-sm">
+            <ol class="inline-flex items-center space-x-1">
+                <li>
+                    <a class="inline-flex items-center hover:text-primary-container transition-colors"
+                       asp-controller="Home" asp-action="Index">
+                        <span class="material-symbols-outlined text-[14px] mr-1">home</span>
+                        Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <span class="material-symbols-outlined text-[14px] mx-1">chevron_right</span>
+                    <span class="text-primary-container font-medium">Blog</span>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="font-headline-lg-mobile md:font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-4">
+            Blog Chia Sẻ Kinh Nghiệm &amp; Mẹo Hay Nhà Bếp
+        </h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+            Khám phá những bí quyết nấu nướng, cẩm nang chọn thực phẩm và mẹo vặt gia đình giúp căn bếp của bạn luôn tràn đầy cảm hứng.
+        </p>
+    </section>
+
+    <section class="w-full">
+        @if (!Model.Blogs.Any() && Model.TotalItems == 0)
+        {
+            <div class="text-center py-16 text-on-surface-variant bg-surface-container-low rounded-xl border border-outline-variant">
+                <span class="material-symbols-outlined text-5xl mb-4 block">article</span>
+                <p>Chưa có bài viết nào.</p>
+            </div>
+        }
+        else
+        {
+            <form method="get" asp-controller="Blogs" asp-action="Index" id="blogFilterForm"
+                  class="flex flex-col sm:flex-row justify-end items-center gap-stack-md mb-stack-lg bg-surface-container-lowest p-2 rounded-xl border border-outline-variant">
+                <input type="hidden" name="page" id="pageInput" value="@Model.CurrentPage"/>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Hiển thị:</span>
+                    <select id="pageSizeSelect" name="pageSize"
+                            class="blog-filter-input bg-surface-container border-none rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-primary-container text-sm cursor-pointer w-full sm:w-auto">
+                        @foreach (var size in BlogIndexViewModel.AllowedPageSizes)
+                        {
+                            if (Model.PageSize == size)
+                            {
+                                <option value="@size" selected>@size / trang</option>
+                            }
+                            else
+                            {
+                                <option value="@size">@size / trang</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </form>
+
+            @if (!Model.Blogs.Any())
+            {
+                <div class="text-center py-16 text-on-surface-variant bg-surface-container-low rounded-xl border border-outline-variant">
+                    <p>Không có bài viết trên trang này.</p>
+                    <a asp-controller="Blogs" asp-action="Index" asp-route-page="1" asp-route-pageSize="@Model.PageSize"
+                       class="text-primary-container hover:underline text-sm mt-2 inline-block">Về trang 1</a>
+                </div>
+            }
+            else
+            {
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-lg">
+                    @for (var i = 0; i < Model.Blogs.Count; i++)
+                    {
+                        <partial name="_BlogListCard" model="@(Model.Blogs[i], i)"/>
+                    }
+                </div>
+            }
+
+            @if (Model.TotalItems > 0)
+            {
+                <div class="mt-stack-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-sm text-on-surface-variant">
+                        Trang @Model.CurrentPage / @Model.TotalPages
+                        <span class="hidden sm:inline">— @Model.TotalItems bài viết</span>
+                    </p>
+                    @if (Model.TotalPages > 1)
+                    {
+                        <nav aria-label="Pagination" class="flex items-center gap-2">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <a href="@(blogsBaseUrl + Model.BuildQueryString(Model.CurrentPage - 1))"
+                                   class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors border border-outline-variant"
+                                   title="Trang trước">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant opacity-50 cursor-not-allowed border border-outline-variant">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </span>
+                            }
+
+                            @for (var p = 1; p <= Model.TotalPages; p++)
+                            {
+                                if (p == Model.CurrentPage)
+                                {
+                                    <span class="w-10 h-10 rounded-lg flex items-center justify-center bg-primary-container text-white font-bold">@p</span>
+                                }
+                                else
+                                {
+                                    <a href="@(blogsBaseUrl + Model.BuildQueryString(p))"
+                                       class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors border border-outline-variant">
+                                        @p
+                                    </a>
+                                }
+                            }
+
+                            @if (Model.HasNextPage)
+                            {
+                                <a href="@(blogsBaseUrl + Model.BuildQueryString(Model.CurrentPage + 1))"
+                                   class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors border border-outline-variant"
+                                   title="Trang sau">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant opacity-50 cursor-not-allowed border border-outline-variant">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </span>
+                            }
+                        </nav>
+                    }
+                </div>
+            }
+        }
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('pageSizeSelect')?.addEventListener('change', function () {
+            var pageInput = document.getElementById('pageInput');
+            if (pageInput) pageInput.value = '1';
+            document.getElementById('blogFilterForm')?.submit();
+        });
+    </script>
+}

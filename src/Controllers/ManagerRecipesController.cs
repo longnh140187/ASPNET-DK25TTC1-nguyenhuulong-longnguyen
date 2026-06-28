@@ -1,13 +1,11 @@
-using System.Globalization;
-using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsite.Web.Constants;
 using RecipeWebsite.Web.Data;
 using RecipeWebsite.Web.Models;
+using RecipeWebsite.Web.Services;
 using RecipeWebsite.Web.ViewModels;
 
 namespace RecipeWebsite.Web.Controllers;
@@ -326,7 +324,7 @@ public class ManagerRecipesController : Controller
 
     private async Task<string> GenerateUniqueSlugAsync(string title, string? excludeId = null)
     {
-        var baseSlug = Slugify(title);
+        var baseSlug = SlugHelper.FromTitle(title, "cong-thuc");
         var slug = baseSlug;
         var counter = 1;
 
@@ -339,26 +337,5 @@ public class ManagerRecipesController : Controller
         }
 
         return slug;
-    }
-
-    private static string Slugify(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "cong-thuc";
-
-        var normalized = text.Normalize(NormalizationForm.FormD);
-        var sb = new StringBuilder();
-
-        foreach (var c in normalized)
-        {
-            if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                sb.Append(c);
-        }
-
-        var result = sb.ToString().Normalize(NormalizationForm.FormC).ToLowerInvariant();
-        result = Regex.Replace(result, @"[^a-z0-9\s-]", "");
-        result = Regex.Replace(result, @"[\s-]+", "-").Trim('-');
-
-        return string.IsNullOrEmpty(result) ? "cong-thuc" : result;
     }
 }

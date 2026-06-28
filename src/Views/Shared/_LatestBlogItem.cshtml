@@ -1,0 +1,32 @@
+@model Blog
+@using RecipeWebsite.Web.ViewModels
+@{
+    var hasThumbnail = !string.IsNullOrWhiteSpace(Model.ThumbnailUrl);
+}
+
+<a class="flex gap-4 group" asp-controller="Blogs" asp-action="Detail" asp-route-slug="@Model.Slug">
+    <div class="w-32 h-24 shrink-0 rounded-lg overflow-hidden bg-surface-container">
+        @if (hasThumbnail)
+        {
+            <img alt="@Model.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="@Model.ThumbnailUrl" loading="lazy">
+        }
+        else
+        {
+            <div class="w-full h-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-2xl">article</span>
+            </div>
+        }
+    </div>
+    <div class="flex flex-col justify-between min-w-0">
+        <h3 class="font-bold text-on-surface group-hover:text-primary-container transition-colors line-clamp-2">@Model.Title</h3>
+        @if (!string.IsNullOrWhiteSpace(Model.Summary))
+        {
+            <p class="text-body-md text-on-surface-variant line-clamp-2">@Model.Summary</p>
+        }
+        <div class="flex items-center gap-3 text-xs text-on-surface-variant mt-2">
+            <span class="text-secondary font-medium">Bài viết</span>
+            <span>•</span>
+            <span>@BlogIndexViewModel.FormatDate(Model.CreatedAt)</span>
+        </div>
+    </div>
+</a>

@@ -32,8 +32,11 @@ Website chia sẻ công thức nấu ăn, món ăn Việt Nam và quốc tế.
 ```
 .
 ├── README.md
-├── setup/
-├── src/
+├── Makefile        # make up / make down — chạy Docker nhanh
+├── .dockerignore   # Docker build (context = thư mục gốc)
+├── setup/          # .env.example, script seed migration
+├── src/            # ASP.NET Core MVC
+├── docker/         # Dockerfile, docker-compose.yml
 ├── progress-report/
 ├── thesis/
 │   ├── doc/
@@ -42,27 +45,55 @@ Website chia sẻ công thức nấu ăn, món ăn Việt Nam và quốc tế.
 │   ├── abs/
 │   └── refs/
 ├── soft/
-└── docker/
 ```
 
 ## Hướng dẫn chạy
 
-### 1. Cấu hình môi trường
+### Chạy nhanh (chỉ cần Docker)
+
+Yêu cầu: [Docker Desktop](https://www.docker.com/products/docker-desktop/) (hoặc Docker Engine + Compose).
 
 ```bash
-cp .env.example .env
+make up
 ```
 
-Chỉnh `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` cho MySQL local/Docker.
+Hoặc không dùng Makefile:
 
-### 2. Cài EF tools (lần đầu)
+```bash
+docker compose -f docker/docker-compose.yml up --build
+```
+
+Sau khi container `web` sẵn sàng, mở trình duyệt: **http://localhost:5080**
+
+(Nếu port 5080 bị chiếm: `make up WEB_PORT=8888` rồi mở `http://localhost:8888`.)
+
+Lệnh trên tự động:
+- Tạo và chạy MySQL
+- Build và chạy website ASP.NET Core
+- Áp dụng migration + seed dữ liệu demo (danh mục, công thức, blog, admin)
+
+Dừng stack: `Ctrl+C`, hoặc `make down`. Xóa cả dữ liệu DB: `make down-v`.
+
+Chi tiết thêm: thư mục `docker/`.
+
+### Chạy local (dotnet CLI)
+
+#### 1. Cấu hình môi trường
+
+```bash
+cp setup/.env.example .env
+```
+
+Chỉnh `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` nếu MySQL không dùng giá trị mặc định trong `setup/.env.example`.
+
+#### 2. Cài EF tools (lần đầu)
 
 ```bash
 cd src
 dotnet tool restore
 ```
 
-### 3. Tạo database và seed dữ liệu mẫu
+#### 3. Tạo database và seed dữ liệu mẫu
 
 ```bash
 cd src
@@ -71,7 +102,9 @@ dotnet ef database update
 
 Migration `SeedFullDummyData` sẽ import toàn bộ dữ liệu demo (danh mục, công thức, blog, admin).
 
-### 4. Chạy website
+> Khi chạy qua Docker Compose, bước `dotnet ef database update` không cần thiết — app tự migrate khi khởi động.
+
+#### 4. Chạy website
 
 ```bash
 dotnet run

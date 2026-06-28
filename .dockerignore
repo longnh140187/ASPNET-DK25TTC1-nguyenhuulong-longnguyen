@@ -1,0 +1,12 @@
+**/.git
+**/.idea
+**/.vs
+**/.env
+**/bin
+**/obj
+**/Logs
+**/.dotnet-tools
+**/.dotnet-tools-arm64
+**/progress-report
+**/thesis
+**/soft
